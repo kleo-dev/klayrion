@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { TwitterApi } from 'twitter-api-v2';
-import config from '@/env';
-import { PostRequest } from '@/platform';
+import config from '@/app/api/env';
+import { PostRequest } from '@/utils';
 import { inspect } from 'util';
 
 export async function POST(req: NextRequest) {
