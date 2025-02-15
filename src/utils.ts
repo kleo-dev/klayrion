@@ -7,7 +7,7 @@ export function generateUrlSafeString(length = 16) {
     return Array.from(array, (byte) => chars[byte % chars.length]).join('');
 }
 
-export type PlatformKind = 'x';
+export type PlatformKind = 'x' | 'linkedin';
 
 export interface Platform {
     platform: PlatformKind;

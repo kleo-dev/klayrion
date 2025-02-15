@@ -1,16 +1,14 @@
+import AccountStatus from '@/components/accountStatus';
 import Engagement from '@/components/engagement';
 import Ideas from '@/components/ideas';
 import RecentPosts from '@/components/recentPosts';
 import { Calendar } from '@/components/ui/calendar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
 
 import {
     SidebarProvider,
     Sidebar,
     SidebarContent,
 } from '@/components/ui/sidebar';
-import { DayPicker } from 'react-day-picker';
 
 export default function Dashboard() {
     return (
@@ -60,16 +58,24 @@ export default function Dashboard() {
                                 },
                             ]}
                         />
-                        <Ideas
-                            ideas={[
+                        <AccountStatus
+                            accounts={[
                                 {
-                                    idea: 'The recent Linus tech tips drama',
-                                    checked: true,
+                                    name: 'Klesti Selimaj',
+                                    ok: true,
+                                    platform: 'linkedin',
                                 },
-                                { idea: 'Code reviews', checked: false },
+
                                 {
-                                    idea: 'How to build charts in react',
-                                    checked: false,
+                                    name: 'Klesti Selimaj',
+                                    ok: true,
+                                    platform: 'x',
+                                },
+
+                                {
+                                    name: 'Leo Codes',
+                                    ok: false,
+                                    platform: 'x',
                                 },
                             ]}
                         />
@@ -78,17 +84,20 @@ export default function Dashboard() {
                         posts={[
                             {
                                 platform: 'x',
-                                name: 'Leo Codes',
-                                username: 'leo.codes',
+                                name: 'Klesti Selimaj',
+                                profileUrl:
+                                    'https://media.licdn.com/dms/image/v2/D5603AQE1lZ2aRsKrhw/profile-displayphoto-shrink_400_400/B56ZRxUoLuHoAg-/0/1737068022127?e=1744848000&v=beta&t=k2T9tdzNyJMmSO8GsT6D2qQmYUQxJRsHbooywDxEDJQ',
                                 content:
                                     "The linus tech tips drama is complex, don't know who to blame, they should try to figure this out privately",
+                                date: new Date(),
                             },
                             {
                                 platform: 'x',
-                                name: 'Leo Codes',
-                                username: 'leo.codes',
-                                content:
-                                    "Hello, world",
+                                name: 'Klesti Selimaj',
+                                profileUrl:
+                                    'https://media.licdn.com/dms/image/v2/D5603AQE1lZ2aRsKrhw/profile-displayphoto-shrink_400_400/B56ZRxUoLuHoAg-/0/1737068022127?e=1744848000&v=beta&t=k2T9tdzNyJMmSO8GsT6D2qQmYUQxJRsHbooywDxEDJQ',
+                                content: 'Hello, world',
+                                date: new Date(),
                             },
                         ]}
                     />
