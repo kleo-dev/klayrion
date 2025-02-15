@@ -4,8 +4,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
+import { useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 export default function SignUp() {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const router = useRouter();
+
     return (
         // <div className="bg-white dark:bg-black w-[46%] h-screen ml-auto">
         <div className="bg-white dark:bg-black w-full h-screen flex justify-center items-center">
@@ -18,22 +26,50 @@ export default function SignUp() {
                     <Input
                         className="w-80 mt-6 mx-auto"
                         placeholder="Full name"
+                        onChange={(event) => setName(event.target.value)}
                     />
 
                     <Input
                         className="w-80 mt-5 mx-auto"
                         type="email"
                         placeholder="name@example.com"
+                        onChange={(event) => setEmail(event.target.value)}
                     />
 
                     <Input
                         className="w-80 mt-5 mx-auto"
                         type="password"
                         placeholder="Enter a password"
+                        onChange={(event) => setPassword(event.target.value)}
                     />
 
-                    <Button className="mt-5 w-80 mx-auto">
-                        Sign in with Email
+                    <Button
+                        className="mt-5 w-80 mx-auto"
+                        onClick={() => {
+                            console.log('Name:', name);
+                            console.log('Email:', email);
+                            console.log('Password:', password);
+
+                            axios
+                                .post('/api/account/', {
+                                    name,
+                                    email,
+                                    password,
+                                })
+                                .then(async (response) => {
+                                    document.cookie = `session_id=${response.data.sessionId}`;
+                                    console.log(
+                                        'Account created with session',
+                                        response.data
+                                    );
+                                    router.push('/dashboard');
+                                })
+                                .catch((err) => {
+                                    console.error(err);
+                                });
+                        }}
+                    >
+                        Create account
                     </Button>
                 </div>
                 <div className="w-72 mx-auto">

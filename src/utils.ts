@@ -19,6 +19,7 @@ export interface PostRequest {
 }
 
 export interface User {
+    name: string;
     email: string;
     password: string;
 }

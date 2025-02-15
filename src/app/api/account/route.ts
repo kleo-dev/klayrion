@@ -10,9 +10,13 @@ import { generateUrlSafeString } from '@/utils';
 // Email doesn't exist
 // Password is between 6-20 characters
 export async function POST(req: NextRequest) {
-    const { email, password } = await req.json();
+    const { email, password, name } = await req.json();
 
-    if (typeof email !== 'string' || typeof password !== 'string')
+    if (
+        typeof email !== 'string' ||
+        typeof password !== 'string' ||
+        typeof name !== 'string'
+    )
         return NextResponse.json(
             {
                 message:
@@ -29,18 +33,17 @@ export async function POST(req: NextRequest) {
             { status: 409 }
         );
 
-    await database.users.insertOne({ email, password });
+    await database.users.insertOne({ email, password, name });
 
-    const response = NextResponse.json(
+    const sessionId = (await database.sessions.insertOne({ email })).insertedId;
+
+    return NextResponse.json(
         {
             message: 'ok',
+            sessionId,
         },
         { status: 200 }
     );
-
-    response.cookies.set('session_id', generateUrlSafeString(16));
-
-    return;
 }
 
 // Account login

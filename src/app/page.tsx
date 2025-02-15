@@ -1,9 +1,14 @@
-'use client';
+import { cookies } from 'next/headers';
 
-export default function Home() {
-    return (
-        <div>
-            <h1 className="text-2xl">The ultimate social media manager</h1>
-        </div>
-    );
+import { redirect } from 'next/navigation';
+
+export default async function Home() {
+    const cookieStore = await cookies();
+    const sessionId = cookieStore.get('session_id');
+    if (sessionId) {
+        redirect('/dashboard');
+    } else {
+        redirect('/login');
+    }
+    return 'redirecting...';
 }
