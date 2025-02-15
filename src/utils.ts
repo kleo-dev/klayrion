@@ -7,8 +7,10 @@ export function generateUrlSafeString(length = 16) {
     return Array.from(array, (byte) => chars[byte % chars.length]).join('');
 }
 
+export type PlatformKind = 'x';
+
 export interface Platform {
-    platform: 'x';
+    platform: PlatformKind;
     token: string;
     secret: string;
 }

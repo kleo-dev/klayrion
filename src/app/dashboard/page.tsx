@@ -1,5 +1,9 @@
 import Engagement from '@/components/engagement';
+import Ideas from '@/components/ideas';
+import RecentPosts from '@/components/recentPosts';
 import { Calendar } from '@/components/ui/calendar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 
 import {
     SidebarProvider,
@@ -19,7 +23,7 @@ export default function Dashboard() {
                 </SidebarProvider>
             </div>
 
-            <div className="flex flex-1 flex-col p-6 px-10 h-max">
+            <div className="flex flex-1 flex-col p-6 px-5 md:px-10 h-max">
                 <div className="w-full">
                     <h1 className="text-3xl font-bold">Dashboard</h1>
                 </div>
@@ -39,6 +43,55 @@ export default function Dashboard() {
                             }}
                         />
                     </div>
+                </div>
+
+                <div className="w-full mt-5 flex gap-5">
+                    <div className="flex flex-col w-max gap-5">
+                        <Ideas
+                            ideas={[
+                                {
+                                    idea: 'The recent Linus tech tips drama',
+                                    checked: true,
+                                },
+                                { idea: 'Code reviews', checked: false },
+                                {
+                                    idea: 'How to build charts in react',
+                                    checked: false,
+                                },
+                            ]}
+                        />
+                        <Ideas
+                            ideas={[
+                                {
+                                    idea: 'The recent Linus tech tips drama',
+                                    checked: true,
+                                },
+                                { idea: 'Code reviews', checked: false },
+                                {
+                                    idea: 'How to build charts in react',
+                                    checked: false,
+                                },
+                            ]}
+                        />
+                    </div>
+                    <RecentPosts
+                        posts={[
+                            {
+                                platform: 'x',
+                                name: 'Leo Codes',
+                                username: 'leo.codes',
+                                content:
+                                    "The linus tech tips drama is complex, don't know who to blame, they should try to figure this out privately",
+                            },
+                            {
+                                platform: 'x',
+                                name: 'Leo Codes',
+                                username: 'leo.codes',
+                                content:
+                                    "Hello, world",
+                            },
+                        ]}
+                    />
                 </div>
             </div>
         </div>
