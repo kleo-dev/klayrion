@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 import config from './env';
-import { generateUrlSafeString, Session, User } from '@/utils';
+import { Session, User } from '@/utils';
 
 const client = new MongoClient(config.mongoUrl);
 

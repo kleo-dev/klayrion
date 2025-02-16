@@ -1,10 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { TwitterApi } from 'twitter-api-v2';
-import config from '@/app/api/env';
-import { PostRequest } from '@/utils';
-import { inspect } from 'util';
 import database from '../database';
-import { generateUrlSafeString } from '@/utils';
 
 // Account creation
 // Email doesn't exist

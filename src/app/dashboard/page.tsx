@@ -2,25 +2,12 @@ import AccountStatus from '@/components/accountStatus';
 import Engagement from '@/components/engagement';
 import Ideas from '@/components/ideas';
 import RecentPosts from '@/components/recentPosts';
+import App from '@/components/app';
 import { Calendar } from '@/components/ui/calendar';
-
-import {
-    SidebarProvider,
-    Sidebar,
-    SidebarContent,
-} from '@/components/ui/sidebar';
 
 export default function Dashboard() {
     return (
-        <div className="flex w-full">
-            <div>
-                <SidebarProvider>
-                    <Sidebar className="w-64 h-full">
-                        <SidebarContent className="p-6">Hello</SidebarContent>
-                    </Sidebar>
-                </SidebarProvider>
-            </div>
-
+        <App>
             <div className="flex flex-1 flex-col p-6 px-5 md:px-10 h-max">
                 <div className="w-full">
                     <h1 className="text-3xl font-bold">Dashboard</h1>
@@ -103,6 +90,6 @@ export default function Dashboard() {
                     />
                 </div>
             </div>
-        </div>
+        </App>
     );
 }

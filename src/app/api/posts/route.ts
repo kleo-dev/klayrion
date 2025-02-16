@@ -20,6 +20,14 @@ export async function POST(req: NextRequest) {
                     });
 
                     await twitterClient.v2.tweet(content);
+
+                default:
+                    return NextResponse.json(
+                        {
+                            message: 'Not implemented',
+                        },
+                        { status: 501 }
+                    );
             }
         }
     } catch (err) {
