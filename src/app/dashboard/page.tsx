@@ -40,7 +40,7 @@ export default async function Dashboard() {
                 </div>
 
                 <div className="w-full mt-5 flex gap-5 flex-col xl:flex-row">
-                    <div className="flex flex-col w-full gap-5 xl:w-[400px]">
+                    <div className="flex flex-col w-full gap-5 xl:w-[600px]">
                         <Ideas
                             ideas={[
                                 {
