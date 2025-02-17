@@ -42,7 +42,7 @@ export default function Engagement({
             <CardContent>
                 <ChartContainer
                     config={chartConfig}
-                    className="w-full xl:w-[680px] lg:h-[270px]"
+                    className="w-full xl:w-[680px] lg:h-[270px] 2xl:w-[880px]"
                 >
                     <AreaChart
                         accessibilityLayer

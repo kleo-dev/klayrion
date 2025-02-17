@@ -3,11 +3,20 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import axios from 'axios';
 import Link from 'next/link';
+import { useState } from 'react';
+import cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+    const { toast } = useToast();
+    const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
     return (
-        // <div className="bg-white dark:bg-black w-[46%] h-screen ml-auto">
         <div className="bg-white dark:bg-black w-full h-screen flex justify-center items-center">
             <div className="text-center">
                 <div className="pb-5">
@@ -19,15 +28,42 @@ export default function Login() {
                         className="w-80 mt-5 mx-auto"
                         type="email"
                         placeholder="name@example.com"
+                        onChange={(event) => setEmail(event.target.value)}
                     />
 
                     <Input
                         className="w-80 mt-5 mx-auto"
                         type="password"
                         placeholder="Your password"
+                        onChange={(event) => setPassword(event.target.value)}
                     />
 
-                    <Button className="mt-5 w-80 mx-auto">Log in</Button>
+                    <Button
+                        className="mt-5 w-80 mx-auto"
+                        onClick={async () => {
+                            try {
+                                const { sessionId } = (
+                                    await axios.post('/api/session/', {
+                                        email,
+                                        password,
+                                    })
+                                ).data;
+
+                                cookies.set('session_id', sessionId);
+
+                                router.replace('/dashboard');
+                            } catch (err: any) {
+                                toast({
+                                    title: 'Uh oh! Something went wrong.',
+                                    description: err.response
+                                        ? err.response.data.message
+                                        : String(err),
+                                });
+                            }
+                        }}
+                    >
+                        Log in
+                    </Button>
                 </div>
                 <div className="w-72 mx-auto">
                     <Label className="mt-3 text-sm text-muted-foreground break-words">
@@ -44,6 +80,5 @@ export default function Login() {
                 </div>
             </div>
         </div>
-        // </div>
     );
 }
