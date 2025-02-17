@@ -16,15 +16,6 @@ import {
     ChartTooltipContent,
 } from '@/components/ui/chart';
 
-const chartData = [
-    { month: 'January', views: 18600 },
-    { month: 'February', views: 1000 },
-    { month: 'March', views: 12000 },
-    { month: 'April', views: 7300 },
-    { month: 'May', views: 23000 },
-    { month: 'June', views: 18000 },
-];
-
 const chartConfig = {
     views: {
         label: 'Views',
@@ -32,13 +23,20 @@ const chartConfig = {
     },
 } satisfies ChartConfig;
 
-export default function Engagement() {
+export default function Engagement({
+    chartData,
+}: {
+    chartData: {
+        week: string;
+        views: number;
+    }[];
+}) {
     return (
         <Card>
             <CardHeader>
                 <CardTitle>Post engagement</CardTitle>
                 <CardDescription>
-                    Showing engagements for the last 6 months
+                    Showing engagements for the last week
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -56,7 +54,7 @@ export default function Engagement() {
                     >
                         <CartesianGrid vertical={false} />
                         <XAxis
-                            dataKey="month"
+                            dataKey="week"
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}

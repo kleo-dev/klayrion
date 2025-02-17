@@ -15,7 +15,7 @@ export default function AccountStatus({
                 <CardTitle>Account status</CardTitle>
             </CardHeader>
 
-            <CardContent className="w-[400px] h-[100px] grid gap-2 grid-cols-2">
+            <CardContent className="w-full h-[100px] grid gap-2 grid-cols-2">
                 {accounts.map((account, i) => (
                     <div key={i} className="flex">
                         {

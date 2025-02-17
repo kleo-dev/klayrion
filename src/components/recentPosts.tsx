@@ -20,11 +20,8 @@ export default function RecentPosts({
                 <CardTitle>Recent posts</CardTitle>
             </CardHeader>
 
-            <CardContent className="w-full grid grid-rows-2 gap-4 items-stretch">
+            <CardContent className="w-full h-full grid grid-rows-2 gap-4 items-stretch">
                 {posts.map((post, i) => (
-                    // <div className="border flex flex-col h-full p-4 rounded-xl" key={i}>
-                    //     {post.content}
-                    // </div>
                     <div
                         key={i}
                         className="border flex flex-col h-full p-4 rounded-xl"

@@ -14,7 +14,7 @@ export default function Ideas({
                 <CardTitle>Daily content Ideas</CardTitle>
             </CardHeader>
 
-            <CardContent className="w-[400px] h-[100px] flex gap-5 flex-col">
+            <CardContent className="w-full h-[100px] flex gap-5 flex-col">
                 {ideas.map(({ idea, checked }, i) => (
                     <div className="flex space-x-2" key={i}>
                         <Checkbox

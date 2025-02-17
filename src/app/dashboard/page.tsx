@@ -4,8 +4,17 @@ import Ideas from '@/components/ideas';
 import RecentPosts from '@/components/recentPosts';
 import App from '@/components/app';
 import { Calendar } from '@/components/ui/calendar';
+import { cookies } from 'next/headers';
+import axios from 'axios';
 
-export default function Dashboard() {
+export default async function Dashboard() {
+    const cookieStore = await cookies();
+    const sessionId = cookieStore.get('session_id')?.value;
+
+    const data = (
+        await axios.get(`http:/localhost:3000/api/session/?id=${sessionId}`)
+    ).data.dashboard;
+
     return (
         <App>
             <div className="flex flex-1 flex-col p-6 px-5 md:px-10 h-max">
@@ -14,7 +23,7 @@ export default function Dashboard() {
                 </div>
 
                 <div className="w-full mt-5 flex flex-col xl:flex-row gap-5 items-stretch">
-                    <Engagement />
+                    <Engagement chartData={data.engagement} />
                     <div className="w-full pb-7 border rounded-2xl">
                         <Calendar
                             className="h-full w-full flex"
@@ -30,8 +39,8 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-                <div className="w-full mt-5 flex gap-5">
-                    <div className="flex flex-col w-max gap-5">
+                <div className="w-full mt-5 flex gap-5 flex-col xl:flex-row">
+                    <div className="flex flex-col w-full gap-5 xl:w-[400px]">
                         <Ideas
                             ideas={[
                                 {

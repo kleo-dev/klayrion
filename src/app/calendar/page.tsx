@@ -38,9 +38,7 @@ function CalendarApp() {
         isDark: true,
     });
 
-    useEffect(() => {
-        console.log(eventsService.getAll());
-    }, [eventsService]);
+    useEffect(() => {}, [eventsService]);
 
     const [newPostDialogOpen, setNewPostDialogOpen] = useState(false);
     const [date, setDate] = useState<Date>(today);

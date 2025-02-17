@@ -58,10 +58,6 @@ export default function SignUp() {
                                 })
                                 .then(async (response) => {
                                     document.cookie = `session_id=${response.data.sessionId}`;
-                                    console.log(
-                                        'Account created with session',
-                                        response.data
-                                    );
                                     router.push('/dashboard');
                                 })
                                 .catch((err) => {
