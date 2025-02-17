@@ -1,17 +1,12 @@
 'use client';
 import { useCalendarApp, ScheduleXCalendar } from '@schedule-x/react';
-import {
-    createViewDay,
-    createViewMonthAgenda,
-    createViewMonthGrid,
-    createViewWeek,
-} from '@schedule-x/calendar';
+import { createViewWeek } from '@schedule-x/calendar';
 
 import { createEventsServicePlugin } from '@schedule-x/events-service';
 import { createDragAndDropPlugin } from '@schedule-x/drag-and-drop';
 
 import '@/calendar-theme.css';
-import { useEffect, useState } from 'react';
+import { MouseEventHandler, useEffect, useState } from 'react';
 import App from '@/components/app';
 import {
     ContextMenu,
@@ -21,26 +16,16 @@ import {
 } from '@/components/ui/context-menu';
 
 import { PlusCircle } from 'lucide-react';
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+
+import { parse } from 'date-fns';
+import PostDialog, { today } from '@/components/postDialog';
 
 function CalendarApp() {
     const eventsService = useState(() => createEventsServicePlugin())[0];
     const dragAndDrop = useState(() => createDragAndDropPlugin())[0];
 
     const calendar = useCalendarApp({
-        views: [
-            createViewDay(),
-            createViewWeek(),
-            createViewMonthGrid(),
-            createViewMonthAgenda(),
-        ],
+        views: [createViewWeek()],
         events: [
             {
                 id: '1',
@@ -58,38 +43,64 @@ function CalendarApp() {
     }, [eventsService]);
 
     const [newPostDialogOpen, setNewPostDialogOpen] = useState(false);
+    const [date, setDate] = useState<Date>(today);
+
+    const handleDialog: MouseEventHandler<HTMLSpanElement> = (event) => {
+        const target = event.target as HTMLElement;
+
+        let hourElement = null;
+        let closestDistance = Infinity;
+        const children = target.parentElement?.children[0].children || [];
+
+        for (let child of children) {
+            const childRect = child.getBoundingClientRect();
+            const dx = Math.abs(
+                event.clientX - (childRect.left + childRect.width / 2)
+            );
+            const dy = Math.abs(
+                event.clientY - (childRect.top + childRect.height / 2)
+            );
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                hourElement = child;
+            }
+        }
+
+        const dayElement = target.closest('.sx__time-grid-day');
+
+        const dayText = dayElement
+            ? dayElement.getAttribute('aria-label')
+            : null;
+
+        if (!dayText || !hourElement) {
+            event.preventDefault();
+        } else {
+            setDate(
+                parse(
+                    (dayText || '') + ' ' + (hourElement?.textContent || ''),
+                    'MMMM dd, yyyy h a',
+                    new Date()
+                )
+            );
+        }
+    };
 
     return (
         <App>
             <div>
-                <Dialog
-                    open={newPostDialogOpen}
-                    onOpenChange={setNewPostDialogOpen}
-                >
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>Feature not available</DialogTitle>
-                        </DialogHeader>
-                        <div></div>
-                        <DialogFooter>
-                            <Button
-                                variant="outline"
-                                onClick={() => setNewPostDialogOpen(false)}
-                            >
-                                Cancel
-                            </Button>
-                            <Button>Submit</Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
-
+                <PostDialog
+                    date={date}
+                    setDate={setDate}
+                    newPostDialogOpen={newPostDialogOpen}
+                    setNewPostDialogOpen={setNewPostDialogOpen}
+                />
                 <ContextMenu>
-                    <ContextMenuTrigger>
+                    <ContextMenuTrigger onContextMenu={handleDialog}>
                         <ScheduleXCalendar
                             calendarApp={calendar}
-                            customComponents={{
-                                headerContent: CalendarHeader,
-                            }}
+                            customComponents={{}}
                         />
                     </ContextMenuTrigger>
                     <ContextMenuContent>
@@ -99,17 +110,13 @@ function CalendarApp() {
                             }}
                         >
                             <PlusCircle className="w-4 mt-0.5" />{' '}
-                            <p className="ml-1">New post</p>
+                            <p className="ml-1">New post</p>x
                         </ContextMenuItem>
                     </ContextMenuContent>
                 </ContextMenu>
             </div>
         </App>
     );
-}
-
-function CalendarHeader() {
-    return <div className="flex flex-row w-full"></div>;
 }
 
 export default CalendarApp;
