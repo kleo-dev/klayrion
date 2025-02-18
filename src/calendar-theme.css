@@ -489,10 +489,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     scroll-behavior: smooth;
 }
 
-.sx__slide-left {
-    /* animation: sx-slide-left 0.3s ease-out; */
-}
-
 @keyframes sx-slide-left {
     0% {
         transform: translateX(8%);
@@ -504,9 +500,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         filter: blur(0);
         opacity: 1;
     }
-}
-.sx__slide-right {
-    /* animation: sx-slide-right 0.3s ease-out; */
 }
 
 @keyframes sx-slide-right {
@@ -1253,4 +1246,15 @@ html:has(.is-shadcn) .sx__date-picker__years-view-accordion__month {
 html:has(.is-shadcn) .sx__date-picker__day--today {
     background-color: var(--sx-color-surface-container);
     color: var(--sx-internal-color-text);
+}
+
+/* modified by leo, this is done because on mobile sometimes pc, you select the calendar without wanting to */
+.sx__calendar,
+.sx__calendar * {
+    -webkit-touch-callout: none !important; /* iOS Safari */
+    -webkit-user-select: none !important; /* Safari, Chrome, Opera, Samsung */
+    -khtml-user-select: none !important; /* Konqueror HTML */
+    -moz-user-select: none !important; /* Firefox */
+    -ms-user-select: none !important; /* Edge, IE */
+    user-select: none !important; /* Modern browsers */
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import {
     Dialog,
     DialogContent,
@@ -19,6 +21,9 @@ import { CalendarIcon } from 'lucide-react';
 import { Calendar } from './ui/calendar';
 import TimeSelect from './timeSelect';
 import { CalendarEventExternal } from '@schedule-x/calendar';
+import { Textarea } from './ui/textarea';
+import { Label } from './ui/label';
+import { useState } from 'react';
 
 type PostDialogProps = {
     newPostDialogOpen: boolean;
@@ -40,6 +45,8 @@ export default function PostDialog({
     setEvents,
     eventId,
 }: PostDialogProps) {
+    const [content, setContent] = useState('');
+
     return (
         <Dialog open={newPostDialogOpen} onOpenChange={setNewPostDialogOpen}>
             <DialogContent>
@@ -95,6 +102,15 @@ export default function PostDialog({
                     />
                 </div>
 
+                <div className="grid w-full gap-1.5">
+                    <Label htmlFor="message">Content</Label>
+                    <Textarea
+                        className="resize-none"
+                        placeholder="Enter your content here"
+                        onChange={(event) => setContent(event.target.value)}
+                    />
+                </div>
+
                 <DialogFooter>
                     <Button
                         variant="outline"
@@ -108,11 +124,10 @@ export default function PostDialog({
                             end.setHours(date.getHours() + 1);
 
                             setEvents({
-                                title: 'My title',
+                                title: 'Post',
                                 id: eventId,
                                 start: format(date, 'y-MM-dd hh:mm'),
                                 end: format(end, 'y-MM-dd hh:mm'),
-                                description: '',
                             });
 
                             setNewPostDialogOpen(false);
