@@ -1,10 +1,4 @@
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
-import {
     Select,
     SelectContent,
     SelectItem,
@@ -24,7 +18,12 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
     className,
 }) => {
     const times = Array.from({ length: 24 }, (_, h) =>
-        [0, 15, 30, 45].map((m) => `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`)
+        [0, 15, 30, 45].map(
+            (m) =>
+                `${(h+1).toString().padStart(2, '0')}:${m
+                    .toString()
+                    .padStart(2, '0')}`
+        )
     ).flat();
 
     const currentHour = date.getHours().toString().padStart(2, '0');
@@ -34,7 +33,9 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
             ? curr
             : prev
     );
-    const selectedTime = `${currentHour}:${nearestMinute.toString().padStart(2, '0')}`;
+    const selectedTime = `${currentHour}:${nearestMinute
+        .toString()
+        .padStart(2, '0')}`;
 
     const handleTimeChange = (newTime: string) => {
         const [hour, minute] = newTime.split(':').map(Number);

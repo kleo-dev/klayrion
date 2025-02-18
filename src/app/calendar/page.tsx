@@ -1,6 +1,6 @@
 'use client';
 import { useCalendarApp, ScheduleXCalendar } from '@schedule-x/react';
-import { CalendarEventExternal, createViewWeek } from '@schedule-x/calendar';
+import { createViewWeek } from '@schedule-x/calendar';
 
 import { createEventsServicePlugin } from '@schedule-x/events-service';
 import { createDragAndDropPlugin } from '@schedule-x/drag-and-drop';
@@ -59,41 +59,50 @@ function CalendarApp() {
         const target = event.target as HTMLElement;
 
         if (target.className === 'sx__time-grid-event-time') {
-            setSelected(
+            const id =
                 target.parentElement?.parentElement?.getAttribute(
                     'data-event-id'
+                );
+            setSelected(id);
+
+            setDate(
+                parse(
+                    calendar.events.get(parseInt(id || ''))?.start || '',
+                    'y-MM-dd hh:mm',
+                    new Date()
                 )
             );
-            return;
         } else {
             setSelected(null);
-        }
 
-        try {
-            const dayElement = target.closest('.sx__time-grid-day');
+            try {
+                const dayElement = target.closest('.sx__time-grid-day');
 
-            const dayText = dayElement
-                ? dayElement.getAttribute('aria-label')
-                : null;
+                const dayText = dayElement
+                    ? dayElement.getAttribute('aria-label')
+                    : null;
 
-            const hourElement = closestChild(
-                target.parentElement?.children[0].children || [],
-                event.clientX,
-                event.clientY
-            );
-
-            if (!dayText || !hourElement) {
-                event.preventDefault();
-            } else {
-                const toDate = parse(
-                    (dayText || '') + ' ' + (hourElement?.textContent || ''),
-                    'MMMM dd, yyyy h a',
-                    new Date()
+                const hourElement = closestChild(
+                    target.parentElement?.children[0].children || [],
+                    event.clientX,
+                    event.clientY
                 );
-                if (toDate instanceof Date && !isNaN(toDate.getTime()))
-                    setDate(toDate);
-            }
-        } catch {}
+
+                if (!dayText || !hourElement) {
+                    event.preventDefault();
+                } else {
+                    const toDate = parse(
+                        (dayText || '') +
+                            ' ' +
+                            (hourElement?.textContent || ''),
+                        'MMMM dd, yyyy h a',
+                        new Date()
+                    );
+                    if (toDate instanceof Date && !isNaN(toDate.getTime()))
+                        setDate(toDate);
+                }
+            } catch {}
+        }
     };
 
     return (

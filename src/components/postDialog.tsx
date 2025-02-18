@@ -45,7 +45,9 @@ export default function PostDialog({
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>New post</DialogTitle>
-                    <DialogDescription>Schedule posts on multiple accounts</DialogDescription>
+                    <DialogDescription>
+                        Schedule posts on multiple accounts
+                    </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-row gap-4">
                     <Popover>
