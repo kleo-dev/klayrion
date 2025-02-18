@@ -23,19 +23,18 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
     setDate,
     className,
 }) => {
-    // Generate time options for all hours (00-23) with minutes (15, 30, 45)
     const times = Array.from({ length: 24 }, (_, h) =>
-        [15, 30, 45].map((m) => `${h.toString().padStart(2, '0')}:${m}`)
+        [0, 15, 30, 45].map((m) => `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`)
     ).flat();
 
     const currentHour = date.getHours().toString().padStart(2, '0');
     const currentMinute = date.getMinutes();
-    const nearestMinute = [15, 30, 45].reduce((prev, curr) =>
+    const nearestMinute = [0, 15, 30, 45].reduce((prev, curr) =>
         Math.abs(curr - currentMinute) < Math.abs(prev - currentMinute)
             ? curr
             : prev
     );
-    const selectedTime = `${currentHour}:${nearestMinute}`;
+    const selectedTime = `${currentHour}:${nearestMinute.toString().padStart(2, '0')}`;
 
     const handleTimeChange = (newTime: string) => {
         const [hour, minute] = newTime.split(':').map(Number);

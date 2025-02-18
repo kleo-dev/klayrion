@@ -1,6 +1,7 @@
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -17,12 +18,15 @@ import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from './ui/calendar';
 import TimeSelect from './timeSelect';
+import { CalendarEventExternal } from '@schedule-x/calendar';
 
 type PostDialogProps = {
     newPostDialogOpen: boolean;
     setNewPostDialogOpen: (b: boolean) => void;
     date: Date;
     setDate: (d: Date) => void;
+    eventId: number;
+    setEvents: (e: CalendarEventExternal) => void;
 };
 
 export const today = new Date();
@@ -33,12 +37,15 @@ export default function PostDialog({
     setNewPostDialogOpen,
     date,
     setDate,
+    setEvents,
+    eventId,
 }: PostDialogProps) {
     return (
         <Dialog open={newPostDialogOpen} onOpenChange={setNewPostDialogOpen}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Feature not available</DialogTitle>
+                    <DialogTitle>New post</DialogTitle>
+                    <DialogDescription>Schedule posts on multiple accounts</DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-row gap-4">
                     <Popover>
@@ -63,7 +70,7 @@ export default function PostDialog({
                                 selected={date}
                                 onSelect={(d: Date | undefined) => {
                                     if (d) {
-                                        const newDate = new Date(d); // Clone d
+                                        const newDate = new Date(d);
                                         newDate.setHours(
                                             date.getHours(),
                                             date.getMinutes(),
@@ -93,7 +100,24 @@ export default function PostDialog({
                     >
                         Cancel
                     </Button>
-                    <Button>Submit</Button>
+                    <Button
+                        onClick={() => {
+                            const end = new Date(date);
+                            end.setHours(date.getHours() + 1);
+
+                            setEvents({
+                                title: 'My title',
+                                id: eventId,
+                                start: format(date, 'y-MM-dd hh:mm'),
+                                end: format(end, 'y-MM-dd hh:mm'),
+                                description: '',
+                            });
+
+                            setNewPostDialogOpen(false);
+                        }}
+                    >
+                        Schedule post
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

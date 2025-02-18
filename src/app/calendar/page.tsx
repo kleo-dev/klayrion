@@ -1,6 +1,6 @@
 'use client';
 import { useCalendarApp, ScheduleXCalendar } from '@schedule-x/react';
-import { createViewWeek } from '@schedule-x/calendar';
+import { CalendarEventExternal, createViewWeek } from '@schedule-x/calendar';
 
 import { createEventsServicePlugin } from '@schedule-x/events-service';
 import { createDragAndDropPlugin } from '@schedule-x/drag-and-drop';
@@ -15,74 +15,85 @@ import {
     ContextMenuTrigger,
 } from '@/components/ui/context-menu';
 
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, Trash } from 'lucide-react';
 
-import { parse } from 'date-fns';
+import { format, parse } from 'date-fns';
 import PostDialog, { today } from '@/components/postDialog';
+
+function closestChild(children: any, clientX: number, clientY: number) {
+    let closestElement = null;
+    let closestDistance = Infinity;
+
+    for (let child of children) {
+        const childRect = child.getBoundingClientRect();
+        const dx = Math.abs(clientX - (childRect.left + childRect.width / 2));
+        const dy = Math.abs(clientY - (childRect.top + childRect.height / 2));
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestElement = child;
+        }
+    }
+
+    return closestElement;
+}
 
 function CalendarApp() {
     const eventsService = useState(() => createEventsServicePlugin())[0];
     const dragAndDrop = useState(() => createDragAndDropPlugin())[0];
+    const [eventCount, setEventCount] = useState(0);
 
     const calendar = useCalendarApp({
         views: [createViewWeek()],
-        events: [
-            {
-                id: '1',
-                title: 'Linus tech tips drama',
-                start: '2025-02-16 01:00',
-                end: '2025-02-16 02:00',
-            },
-        ],
+        events: [],
         plugins: [eventsService, dragAndDrop],
         isDark: true,
     });
 
-    useEffect(() => {}, [eventsService]);
-
     const [newPostDialogOpen, setNewPostDialogOpen] = useState(false);
     const [date, setDate] = useState<Date>(today);
+    const [selected, setSelected] = useState<string | null | undefined>(null);
 
     const handleDialog: MouseEventHandler<HTMLSpanElement> = (event) => {
         const target = event.target as HTMLElement;
 
-        let hourElement = null;
-        let closestDistance = Infinity;
-        const children = target.parentElement?.children[0].children || [];
-
-        for (let child of children) {
-            const childRect = child.getBoundingClientRect();
-            const dx = Math.abs(
-                event.clientX - (childRect.left + childRect.width / 2)
+        if (target.className === 'sx__time-grid-event-time') {
+            setSelected(
+                target.parentElement?.parentElement?.getAttribute(
+                    'data-event-id'
+                )
             );
-            const dy = Math.abs(
-                event.clientY - (childRect.top + childRect.height / 2)
-            );
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                hourElement = child;
-            }
+            return;
+        } else {
+            setSelected(null);
         }
 
-        const dayElement = target.closest('.sx__time-grid-day');
+        try {
+            const dayElement = target.closest('.sx__time-grid-day');
 
-        const dayText = dayElement
-            ? dayElement.getAttribute('aria-label')
-            : null;
+            const dayText = dayElement
+                ? dayElement.getAttribute('aria-label')
+                : null;
 
-        if (!dayText || !hourElement) {
-            event.preventDefault();
-        } else {
-            setDate(
-                parse(
+            const hourElement = closestChild(
+                target.parentElement?.children[0].children || [],
+                event.clientX,
+                event.clientY
+            );
+
+            if (!dayText || !hourElement) {
+                event.preventDefault();
+            } else {
+                const toDate = parse(
                     (dayText || '') + ' ' + (hourElement?.textContent || ''),
                     'MMMM dd, yyyy h a',
                     new Date()
-                )
-            );
-        }
+                );
+                if (toDate instanceof Date && !isNaN(toDate.getTime()))
+                    setDate(toDate);
+            }
+        } catch {}
     };
 
     return (
@@ -93,6 +104,11 @@ function CalendarApp() {
                     setDate={setDate}
                     newPostDialogOpen={newPostDialogOpen}
                     setNewPostDialogOpen={setNewPostDialogOpen}
+                    setEvents={(e) => {
+                        calendar.events.add(e);
+                        setEventCount(eventCount + 1);
+                    }}
+                    eventId={eventCount}
                 />
                 <ContextMenu>
                     <ContextMenuTrigger onContextMenu={handleDialog}>
@@ -108,8 +124,26 @@ function CalendarApp() {
                             }}
                         >
                             <PlusCircle className="w-4 mt-0.5" />{' '}
-                            <p className="ml-1">New post</p>x
+                            <p className="ml-1">New post</p>
                         </ContextMenuItem>
+
+                        {selected ? (
+                            <ContextMenuItem
+                                onClick={() => {
+                                    if (selected) {
+                                        calendar.events.remove(
+                                            parseInt(selected)
+                                        );
+                                    }
+                                }}
+                                className=""
+                            >
+                                <Trash className="w-4 mt-0.5 text-red-500" />{' '}
+                                <p className="ml-1 text-red-500">Delete</p>
+                            </ContextMenuItem>
+                        ) : (
+                            ''
+                        )}
                     </ContextMenuContent>
                 </ContextMenu>
             </div>
