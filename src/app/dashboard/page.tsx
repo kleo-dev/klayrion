@@ -1,7 +1,7 @@
-import AccountStatus from '@/components/accountStatus';
-import Engagement from '@/components/engagement';
-import Ideas from '@/components/ideas';
-import RecentPosts from '@/components/recentPosts';
+import AccountStatus from './accountStatus';
+import Engagement from './engagement';
+import Ideas from './ideas';
+import RecentPosts from './recentPosts';
 import App from '@/components/app';
 import { Calendar } from '@/components/ui/calendar';
 import { cookies } from 'next/headers';
@@ -12,7 +12,7 @@ async function getSession(sessionId: string) {
     try {
         return (
             await axios.get(`http:/localhost:3000/api/session/?id=${sessionId}`)
-        ).data;
+        ).data.dashboard;
     } catch {
         redirect('/login');
     }

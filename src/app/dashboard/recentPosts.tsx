@@ -1,6 +1,6 @@
 import { PlatformKind } from '@/utils';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { PlatformIcon } from './icons';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PlatformIcon } from '@/components/icons';
 import { format } from 'date-fns';
 
 export default function RecentPosts({

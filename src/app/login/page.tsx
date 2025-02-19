@@ -16,30 +16,27 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        async () => {
-            try {
-                const { sessionId } = (
-                    await axios.post('/api/session/', {
-                        email,
-                        password,
-                    })
-                ).data;
+    const handleLogin = async () => {
+        try {
+            const { sessionId } = (
+                await axios.post('/api/session/', {
+                    email,
+                    password,
+                })
+            ).data;
 
-                cookies.set('session_id', sessionId);
+            cookies.set('session_id', sessionId);
 
-                router.replace('/dashboard');
-            } catch (err: any) {
-                toast({
-                    title: 'Uh oh! Something went wrong.',
-                    description: err.response
-                        ? err.response.data.message
-                        : String(err),
-                });
-            }
-        };
+            router.replace('/dashboard');
+        } catch (err: any) {
+            toast({
+                title: 'Uh oh! Something went wrong.',
+                description: err.response
+                    ? err.response.data.message
+                    : String(err),
+            });
+        }
     };
-
     return (
         <div className="bg-white dark:bg-black w-full h-screen flex justify-center items-center">
             <div className="text-center">
@@ -60,7 +57,11 @@ export default function Login() {
                         type="password"
                         placeholder="Your password"
                         onChange={(event) => setPassword(event.target.value)}
-                        onClick={handleLogin}
+                        onKeyDown={async (e) => {
+                            if (e.key === 'Enter') {
+                                await handleLogin();
+                            }
+                        }}
                     />
 
                     <Button className="mt-5 w-80 mx-auto" onClick={handleLogin}>

@@ -19,7 +19,7 @@ import {
 import { PlusCircle, Trash } from 'lucide-react';
 
 import { format, parse } from 'date-fns';
-import PostDialog, { today } from '@/components/postDialog';
+import PostDialog, { today } from './postDialog';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { Schedule } from '@/utils';

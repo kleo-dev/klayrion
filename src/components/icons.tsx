@@ -1,47 +1,5 @@
 import { PlatformKind } from '@/utils';
 
-export function XMark() {
-    return (
-        <svg
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fas"
-            data-icon="xmark"
-            className="svg-inline--fa fa-xmark text-red-500 mr-2"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 384 512"
-            width="14"
-        >
-            <path
-                fill="currentColor"
-                d="M377 105c9.4-9.4 9.4-24.6 0-33.9l-22.6-22.6c-9.4-9.4-24.6-9.4-33.9 0L192 177.9 63.4 48.5c-9.4-9.4-24.6-9.4-33.9 0L6.9 71.1c-9.4 9.4-9.4 24.6 0 33.9L135.3 256 6.9 377c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0L192 334.1 320.6 463.5c9.4 9.4 24.6 9.4 33.9 0l22.6-22.6c9.4-9.4 9.4-24.6 0-33.9L248.7 256 377 105z"
-            ></path>
-        </svg>
-    );
-}
-
-export function Check() {
-    return (
-        <svg
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fas"
-            data-icon="check"
-            className="svg-inline--fa fa-check text-green-500 mr-2"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            width="14"
-        >
-            <path
-                fill="currentColor"
-                d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"
-            ></path>
-        </svg>
-    );
-}
-
 interface PlatformProps extends React.SVGProps<SVGSVGElement> {
     platform: PlatformKind;
 }

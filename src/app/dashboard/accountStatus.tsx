@@ -1,8 +1,8 @@
 'use client';
 
 import { PlatformKind } from '@/utils';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { PlatformIcon } from './icons';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PlatformIcon } from '@/components/icons';
 
 export default function AccountStatus({
     accounts,
