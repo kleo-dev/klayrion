@@ -17,14 +17,16 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
     setDate,
     className,
 }) => {
-    const times = Array.from({ length: 24 }, (_, h) =>
-        [0, 15, 30, 45].map(
-            (m) =>
-                `${(h+1).toString().padStart(2, '0')}:${m
-                    .toString()
-                    .padStart(2, '0')}`
-        )
-    ).flat();
+    const times = ['00:00'].concat(
+        Array.from({ length: 23 }, (_, h) =>
+            [0, 15, 30, 45].map(
+                (m) =>
+                    `${(h + 1).toString().padStart(2, '0')}:${m
+                        .toString()
+                        .padStart(2, '0')}`
+            )
+        ).flat()
+    );
 
     const currentHour = date.getHours().toString().padStart(2, '0');
     const currentMinute = date.getMinutes();
@@ -39,8 +41,9 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
 
     const handleTimeChange = (newTime: string) => {
         const [hour, minute] = newTime.split(':').map(Number);
+        console.log(hour, minute);
         const newDate = new Date(date);
-        newDate.setHours(hour, minute, 0, 0);
+        newDate.setHours(hour === 24 ? 0 : hour, minute, 0, 0);
         setDate(newDate);
     };
 

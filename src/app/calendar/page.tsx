@@ -83,8 +83,21 @@ function CalendarApp() {
     const [newPostDialogOpen, setNewPostDialogOpen] = useState(false);
     const [date, setDate] = useState<Date>(today);
     const [selected, setSelected] = useState<string | null | undefined>(null);
+    const [scrollY, setScrollY] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            window.scrollTo(0, scrollY);
+        }, 10);
+
+        setTimeout(() => {
+            clearInterval(interval);
+        }, 300);
+    }, [scrollY]);
 
     const handleDialog: MouseEventHandler<HTMLSpanElement> = (event) => {
+        setScrollY(window.scrollY);
+
         const target = event.target as HTMLElement;
 
         if (target.className === 'sx__time-grid-event-time') {
