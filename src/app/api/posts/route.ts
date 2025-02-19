@@ -1,42 +1,69 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { TwitterApi } from 'twitter-api-v2';
-import config from '@/app/api/env';
-import { PostRequest } from '@/utils';
-import { inspect } from 'util';
+import database from '../database';
+import { PostRequest, Schedule } from '@/utils';
+import post from './post';
+import { ObjectId } from 'mongodb';
+import { use } from 'react';
 
 export async function POST(req: NextRequest) {
-    const { content, platforms }: PostRequest = await req.json();
+    const request: PostRequest = await req.json();
 
-    try {
-        for (const platform of platforms) {
-            switch (platform.platform) {
-                // X / Twitter
-                case 'x':
-                    const twitterClient = new TwitterApi({
-                        appKey: config.twitter.key,
-                        appSecret: config.twitter.secret,
-                        accessToken: platform.token,
-                        accessSecret: platform.secret,
-                    });
-
-                    await twitterClient.v2.tweet(content);
-
-                default:
-                    return NextResponse.json(
-                        {
-                            message: 'Not implemented',
-                        },
-                        { status: 501 }
-                    );
-            }
-        }
-    } catch (err) {
-        console.log(inspect(err, true, null, true));
-    }
+    post(request);
 
     return NextResponse.json(
         {
             message: 'ok',
+        },
+        { status: 200 }
+    );
+}
+
+export async function PUT(req: NextRequest) {
+    const request: Schedule = await req.json();
+
+    database.schedules.insertOne(request);
+
+    return NextResponse.json(
+        {
+            message: 'ok',
+        },
+        { status: 200 }
+    );
+}
+
+export async function GET(req: NextRequest) {
+    const sessionId = new URL(req.url).searchParams.get('id');
+
+    if (typeof sessionId !== 'string')
+        return NextResponse.json(
+            {
+                message: 'Invalid structure, required param `id=`',
+            },
+            { status: 400 }
+        );
+
+    const session = await database.sessions.findOne({
+        _id: new ObjectId(sessionId),
+    });
+
+    if (!session)
+        return NextResponse.json(
+            {
+                message: 'Invalid session',
+            },
+            { status: 404 }
+        );
+
+    const schedules = await database.schedules
+        .find({
+            account: session.user,
+        })
+        .toArray();
+
+    return NextResponse.json(
+        {
+            message: 'ok',
+            schedules,
         },
         { status: 200 }
     );

@@ -24,6 +24,8 @@ import { CalendarEventExternal } from '@schedule-x/calendar';
 import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
 import { useState } from 'react';
+import axios from 'axios';
+import { Schedule } from '@/utils';
 
 type PostDialogProps = {
     newPostDialogOpen: boolean;
@@ -42,7 +44,7 @@ export default function PostDialog({
     setNewPostDialogOpen,
     date,
     setDate,
-    setEvents,
+    setEvents: addEvent,
     eventId,
 }: PostDialogProps) {
     const [content, setContent] = useState('');
@@ -123,12 +125,18 @@ export default function PostDialog({
                             const end = new Date(date);
                             end.setHours(date.getHours() + 1);
 
-                            setEvents({
+                            addEvent({
                                 title: 'Post',
                                 id: eventId,
                                 start: format(date, 'y-MM-dd hh:mm'),
                                 end: format(end, 'y-MM-dd hh:mm'),
                             });
+                            axios.put('http://localhost:3000/api/posts', {
+                                scheduled: format(date, 'y-MM-dd hh:mm'),
+                                account: '',
+                                platforms: [],
+                                content,
+                            } satisfies Schedule);
 
                             setNewPostDialogOpen(false);
                         }}

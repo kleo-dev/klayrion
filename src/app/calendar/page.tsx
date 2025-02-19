@@ -1,4 +1,5 @@
 'use client';
+
 import { useCalendarApp, ScheduleXCalendar } from '@schedule-x/react';
 import { createViewWeek } from '@schedule-x/calendar';
 
@@ -19,6 +20,9 @@ import { PlusCircle, Trash } from 'lucide-react';
 
 import { format, parse } from 'date-fns';
 import PostDialog, { today } from '@/components/postDialog';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { Schedule } from '@/utils';
 
 function closestChild(children: any, clientX: number, clientY: number) {
     let closestElement = null;
@@ -43,6 +47,7 @@ function CalendarApp() {
     const eventsService = useState(() => createEventsServicePlugin())[0];
     const dragAndDrop = useState(() => createDragAndDropPlugin())[0];
     const [eventCount, setEventCount] = useState(0);
+    const sessionId = Cookies.get('session_id') || '';
 
     const calendar = useCalendarApp({
         views: [createViewWeek()],
@@ -50,6 +55,30 @@ function CalendarApp() {
         plugins: [eventsService, dragAndDrop],
         isDark: true,
     });
+
+    useEffect(() => {
+        axios.get(`/api/posts/?id=${sessionId}`).then((response) => {
+            for (const [id, sched] of (
+                response.data.schedules as Schedule[]
+            ).entries()) {
+                const date = parse(
+                    sched.scheduled,
+                    'y-MM-dd hh:mm',
+                    new Date()
+                );
+                const end = new Date(date);
+                end.setHours(date.getHours() + 1);
+
+                calendar.events.add({
+                    title: 'Post',
+                    id,
+                    start: format(date, 'y-MM-dd hh:mm'),
+                    end: format(end, 'y-MM-dd hh:mm'),
+                });
+                setEventCount(eventCount + 1);
+            }
+        });
+    }, []);
 
     const [newPostDialogOpen, setNewPostDialogOpen] = useState(false);
     const [date, setDate] = useState<Date>(today);

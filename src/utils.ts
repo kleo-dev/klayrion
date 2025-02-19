@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 export type PlatformKind = 'x' | 'linkedin';
 
 export interface Platform {
@@ -7,6 +9,7 @@ export interface Platform {
 }
 
 export interface PostRequest {
+    account: string;
     content: string;
     platforms: Platform[];
 }
@@ -15,6 +18,11 @@ export interface User {
     name: string;
     email: string;
     password: string;
+    platforms: Platform[];
 }
 
-export type Session = { email: string };
+export interface Schedule extends PostRequest {
+    scheduled: string;
+}
+
+export type Session = { user: string };

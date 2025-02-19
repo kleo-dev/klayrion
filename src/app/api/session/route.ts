@@ -80,7 +80,9 @@ export async function POST(req: NextRequest) {
             { status: 401 }
         );
 
-    const sessionId = (await database.sessions.insertOne({ email })).insertedId;
+    const sessionId = (
+        await database.sessions.insertOne({ user: user._id.toString() })
+    ).insertedId;
 
     return NextResponse.json(
         {

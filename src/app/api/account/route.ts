@@ -28,9 +28,10 @@ export async function POST(req: NextRequest) {
             { status: 409 }
         );
 
-    await database.users.insertOne({ email, password, name });
+    await database.users.insertOne({ email, password, name, platforms: [] });
 
-    const sessionId = (await database.sessions.insertOne({ email })).insertedId;
+    const sessionId = (await database.sessions.insertOne({ user: email }))
+        .insertedId;
 
     return NextResponse.json(
         {
