@@ -22,7 +22,7 @@ import { format, parse } from 'date-fns';
 import PostDialog, { today } from './postDialog';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { ScheduleRequest } from '@/utils';
+import { Schedule, ScheduleRemoveRequest, ScheduleRequest } from '@/utils';
 
 function closestChild(children: any, clientX: number, clientY: number) {
     let closestElement = null;
@@ -185,6 +185,19 @@ function CalendarApp() {
                                     if (selected) {
                                         calendar.events.remove(
                                             parseInt(selected)
+                                        );
+
+                                        axios.delete(
+                                            `http://localhost:3000/api/posts`,
+                                            {
+                                                params: {
+                                                    id: sessionId,
+                                                    date: format(
+                                                        date,
+                                                        'y-MM-dd hh:mm'
+                                                    ),
+                                                } satisfies ScheduleRemoveRequest,
+                                            }
                                         );
                                     }
                                 }}

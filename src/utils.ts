@@ -12,6 +12,11 @@ export interface ScheduleRequest extends PostRequest {
     scheduled: string;
 }
 
+export interface ScheduleRemoveRequest {
+    date: string;
+    id: string;
+}
+
 /*
 Database types
 */

@@ -133,6 +133,7 @@ export default function PostDialog({
                                 start: format(date, 'y-MM-dd hh:mm'),
                                 end: format(end, 'y-MM-dd hh:mm'),
                             });
+
                             axios.put('http://localhost:3000/api/posts', {
                                 scheduled: format(date, 'y-MM-dd hh:mm'),
                                 sessionId,
