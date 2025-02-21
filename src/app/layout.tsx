@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { cn } from '@/lib/utils';
 import './globals.css';
-import { ThemeProvider } from './ThemeProvider';
 import { Toaster } from '@/components/ui/toaster';
+import { ThemeProvider, useTheme } from 'next-themes';
+import ThemeToggle from '@/components/themeToggle';
 
 export const metadata: Metadata = {
     title: 'Create Next App',
@@ -24,7 +25,6 @@ export default function RootLayout({
             >
                 <ThemeProvider
                     attribute="class"
-                    defaultTheme="dark"
                     enableSystem
                     disableTransitionOnChange
                 >

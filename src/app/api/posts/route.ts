@@ -1,14 +1,39 @@
 import { NextResponse, NextRequest } from 'next/server';
 import database from '../database';
-import { PostRequest, Schedule } from '@/utils';
+import { PostRequest, ScheduleRequest } from '@/utils';
 import post from './post';
 import { ObjectId } from 'mongodb';
-import { use } from 'react';
 
 export async function POST(req: NextRequest) {
-    const request: PostRequest = await req.json();
+    const { sessionId, content, platforms }: PostRequest = await req.json();
 
-    post(request);
+    console.log(sessionId);
+
+    if (typeof sessionId !== 'string')
+        return NextResponse.json(
+            {
+                message: 'Invalid structure, required param `id=`',
+            },
+            { status: 400 }
+        );
+
+    const session = await database.sessions.findOne({
+        _id: new ObjectId(sessionId),
+    });
+
+    if (!session)
+        return NextResponse.json(
+            {
+                message: 'Invalid session',
+            },
+            { status: 404 }
+        );
+
+    post({
+        account: session.user,
+        content,
+        platforms,
+    });
 
     return NextResponse.json(
         {
@@ -19,9 +44,35 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-    const request: Schedule = await req.json();
+    const { sessionId, scheduled, content, platforms }: ScheduleRequest =
+        await req.json();
 
-    database.schedules.insertOne(request);
+    if (typeof sessionId !== 'string')
+        return NextResponse.json(
+            {
+                message: 'Invalid structure, required param `id=`',
+            },
+            { status: 400 }
+        );
+
+    const session = await database.sessions.findOne({
+        _id: new ObjectId(sessionId),
+    });
+
+    if (!session)
+        return NextResponse.json(
+            {
+                message: 'Invalid session',
+            },
+            { status: 404 }
+        );
+
+    database.schedules.insertOne({
+        account: session.user,
+        scheduled,
+        content,
+        platforms,
+    });
 
     return NextResponse.json(
         {

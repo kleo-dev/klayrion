@@ -22,7 +22,7 @@ import { format, parse } from 'date-fns';
 import PostDialog, { today } from './postDialog';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { Schedule } from '@/utils';
+import { ScheduleRequest } from '@/utils';
 
 function closestChild(children: any, clientX: number, clientY: number) {
     let closestElement = null;
@@ -59,7 +59,7 @@ function CalendarApp() {
     useEffect(() => {
         axios.get(`/api/posts/?id=${sessionId}`).then((response) => {
             for (const [id, sched] of (
-                response.data.schedules as Schedule[]
+                response.data.schedules as ScheduleRequest[]
             ).entries()) {
                 const date = parse(
                     sched.scheduled,
@@ -160,6 +160,7 @@ function CalendarApp() {
                         setEventCount(eventCount + 1);
                     }}
                     eventId={eventCount}
+                    sessionId={sessionId}
                 />
                 <ContextMenu>
                     <ContextMenuTrigger onContextMenu={handleDialog}>

@@ -1,4 +1,20 @@
-import { ObjectId } from 'mongodb';
+/*
+Request types
+*/
+
+export interface PostRequest {
+    sessionId: string;
+    content: string;
+    platforms: string[];
+}
+
+export interface ScheduleRequest extends PostRequest {
+    scheduled: string;
+}
+
+/*
+Database types
+*/
 
 export type PlatformKind = 'x' | 'linkedin';
 
@@ -8,20 +24,22 @@ export interface Platform {
     secret: string;
 }
 
-export interface PostRequest {
-    account: string;
-    content: string;
-    platforms: Platform[];
-}
+export type Platforms = { [key: string]: Platform };
 
 export interface User {
     name: string;
     email: string;
     password: string;
-    platforms: Platform[];
+    platforms: Platforms;
 }
 
-export interface Schedule extends PostRequest {
+export interface Post {
+    account: string;
+    content: string;
+    platforms: string[];
+}
+
+export interface Schedule extends Post {
     scheduled: string;
 }
 

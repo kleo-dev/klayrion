@@ -1,14 +1,21 @@
 import { TwitterApi } from 'twitter-api-v2';
 import config from '@/app/api/env';
 import { inspect } from 'util';
-import { PostRequest } from '@/utils';
+import { Post } from '@/utils';
 import database from '../database';
 import { format } from 'date-fns';
 import cron from 'node-cron';
+import { ObjectId } from 'mongodb';
 
-export default async function post({ platforms, content }: PostRequest) {
+export default async function post({ platforms, content, account }: Post) {
     try {
-        for (const platform of platforms) {
+        const user = await database.users.findOne({
+            _id: new ObjectId(account),
+        });
+
+        if (!user) return;
+        for (const platformKey of platforms) {
+            const platform = user.platforms[platformKey];
             switch (platform.platform) {
                 // X / Twitter
                 case 'x':
