@@ -123,6 +123,20 @@ export default function PostDialog({
                         Cancel
                     </Button>
                     <Button
+                        variant="destructive"
+                        onClick={() => {
+                            axios.post('http://localhost:3000/api/posts', {
+                                sessionId,
+                                platforms: ['andjksds'],
+                                content,
+                            } satisfies PostRequest);
+
+                            setNewPostDialogOpen(false);
+                        }}
+                    >
+                        Post now
+                    </Button>
+                    <Button
                         onClick={() => {
                             const end = new Date(date);
                             end.setHours(date.getHours() + 1);
