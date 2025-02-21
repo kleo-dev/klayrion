@@ -188,7 +188,7 @@ function CalendarApp() {
                                         );
 
                                         axios.delete(
-                                            `http://localhost:3000/api/posts`,
+                                            `/api/posts`,
                                             {
                                                 params: {
                                                     id: sessionId,

@@ -123,9 +123,9 @@ export default function PostDialog({
                         Cancel
                     </Button>
                     <Button
-                        variant="destructive"
+                        variant="secondary"
                         onClick={() => {
-                            axios.post('http://localhost:3000/api/posts', {
+                            axios.post('/api/posts', {
                                 sessionId,
                                 platforms: ['andjksds'],
                                 content,
@@ -148,7 +148,7 @@ export default function PostDialog({
                                 end: format(end, 'y-MM-dd hh:mm'),
                             });
 
-                            axios.put('http://localhost:3000/api/posts', {
+                            axios.put('/api/posts', {
                                 scheduled: format(date, 'y-MM-dd hh:mm'),
                                 sessionId,
                                 platforms: ['andjksds'],
