@@ -1,16 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
-import {
-    Sheet,
-    SheetContent,
-    SheetFooter,
-    SheetTitle,
-    SheetTrigger,
-} from '@/components/ui/sheet';
 
 import {
     SidebarContent,
@@ -27,6 +18,7 @@ import {
 import { Calendar, LayoutDashboardIcon, Settings } from 'lucide-react';
 import Link from 'next/link';
 import useSmallScreen from '@/hooks/is-small';
+import ThemeToggle from './themeToggle';
 
 // Menu items.
 const items = [
@@ -50,58 +42,15 @@ const footer = [
     },
 ];
 
-export function HamburgerMenu() {
-    const [open, setOpen] = React.useState(false);
-    const pathname = usePathname();
-
-    return (
-        <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTitle className="hidden">Menu</SheetTitle>
-            <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                    <Menu className="h-10 w-5" />
-                    <span className="sr-only">Toggle menu</span>
-                </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-28 flex flex-col">
-                {items.map((item, i) => (
-                    <div key={i} className="w-16 mx-auto">
-                        <Link href={item.url}>
-                            {pathname === item.url ? (
-                                <item.icon className="!size-full p-2 bg-foreground text-background rounded-2xl" />
-                            ) : (
-                                <item.icon className="!size-full p-2 hover:bg-foreground hover:text-background rounded-2xl" />
-                            )}
-                        </Link>
-                    </div>
-                ))}
-
-                <div className="flex-grow" />
-
-                <SheetFooter className="mt-auto">
-                    {footer.map((item, i) => (
-                        <Link href={item.url} key={i}>
-                            {pathname === item.url ? (
-                                <item.icon className="!size-full p-2 bg-foreground text-background rounded-2xl" />
-                            ) : (
-                                <item.icon className="!size-full p-2 hover:bg-foreground hover:text-background rounded-2xl" />
-                            )}
-                        </Link>
-                    ))}
-                </SheetFooter>
-            </SheetContent>
-        </Sheet>
-    );
-}
-
 export default function App({ children }: { children?: any }) {
     const isSmall = useSmallScreen();
     const pathname = usePathname();
 
     return isSmall ? (
-        <div className="flex flex-col">
-            <div className="flex flex-row w-max mx-auto gap-2 items-center">
-                <div className="flex flex-row w-max gap-2">
+        <div className="flex flex-col relative">
+            <div className="flex flex-row justify-center gap-2 items-center relative mt-2">
+                {/* Navigation Items */}
+                <div className="flex flex-row gap-2">
                     {items.map((item, i) => (
                         <div key={i} className="w-12 mx-auto">
                             <Link href={item.url}>
@@ -115,7 +64,8 @@ export default function App({ children }: { children?: any }) {
                     ))}
                 </div>
 
-                <div className="flex flex-row w-max gap-2">
+                {/* Footer Items */}
+                <div className="flex flex-row gap-2">
                     {footer.map((item, i) => (
                         <div key={i} className="w-12 mx-auto">
                             <Link href={item.url}>
@@ -128,7 +78,12 @@ export default function App({ children }: { children?: any }) {
                         </div>
                     ))}
                 </div>
+
+                <div className="absolute right-0 mr-4">
+                    <ThemeToggle />
+                </div>
             </div>
+
             {children}
         </div>
     ) : (
@@ -177,6 +132,7 @@ export default function App({ children }: { children?: any }) {
                                         </Link>
                                     </SidebarMenuItem>
                                 ))}
+                                <ThemeToggle className="mx-auto" />
                             </SidebarMenu>
                         </SidebarFooter>
                     </Sidebar>
