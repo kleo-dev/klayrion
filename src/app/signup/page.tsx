@@ -15,7 +15,6 @@ export default function SignUp() {
     const router = useRouter();
 
     return (
-        // <div className="bg-white dark:bg-black w-[46%] h-screen ml-auto">
         <div className="bg-white dark:bg-black w-full h-screen flex justify-center items-center">
             <div className="text-center">
                 <h1 className="text-xl pb-2">Create an account</h1>
@@ -73,8 +72,8 @@ export default function SignUp() {
                         By clicking continue, you agree to our{' '}
                         <Link href="/terms" className="underline">
                             Terms of Service
-                        </Link>{' '}
-                        {'and '}
+                        </Link>
+                        {' and '}
                         <Link href="/privacy" className="underline">
                             Privacy Policy
                         </Link>
@@ -83,6 +82,5 @@ export default function SignUp() {
                 </div>
             </div>
         </div>
-        // </div>
     );
 }
