@@ -13,7 +13,7 @@ export interface ScheduleRequest extends PostRequest {
 }
 
 export interface ScheduleRemoveRequest {
-    date: string;
+    schedule: string;
     id: string;
 }
 

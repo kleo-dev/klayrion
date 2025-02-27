@@ -26,6 +26,7 @@ import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import axios from 'axios';
 import { PostRequest, ScheduleRequest } from '@/utils';
+import { CalendarSchedule } from './calendar';
 
 type PostDialogProps = {
     newPostDialogOpen: boolean;
@@ -33,7 +34,7 @@ type PostDialogProps = {
     date: Date;
     setDate: (d: Date) => void;
     eventId: number;
-    setEvents: (e: CalendarEventExternal) => void;
+    setEvents: (e: CalendarSchedule) => void;
     sessionId: string;
 };
 
@@ -137,23 +138,19 @@ export default function PostDialog({
                         Post now
                     </Button>
                     <Button
-                        onClick={() => {
-                            const end = new Date(date);
-                            end.setHours(date.getHours() + 1);
-
-                            addEvent({
-                                title: 'Post',
-                                id: eventId,
-                                start: format(date, 'y-MM-dd hh:mm'),
-                                end: format(end, 'y-MM-dd hh:mm'),
-                            });
-
-                            axios.put('/api/posts', {
+                        onClick={async () => {
+                            const { data } = await axios.put('/api/posts', {
                                 scheduled: format(date, 'y-MM-dd hh:mm'),
                                 sessionId,
                                 platforms: ['andjksds'],
                                 content,
                             } satisfies ScheduleRequest);
+
+                            addEvent({
+                                id: data.id,
+                                date,
+                                platforms: [{ user: 'andjksds' }],
+                            });
 
                             setNewPostDialogOpen(false);
                         }}

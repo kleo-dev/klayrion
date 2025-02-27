@@ -72,16 +72,17 @@ export async function PUT(req: NextRequest) {
             { status: HttpStatusCode.NotFound }
         );
 
-    database.schedules.insertOne({
-        account: session.user,
-        scheduled,
-        content,
-        platforms,
-    });
-
     return NextResponse.json(
         {
             message: 'ok',
+            id: (
+                await database.schedules.insertOne({
+                    account: session.user,
+                    scheduled,
+                    content,
+                    platforms,
+                })
+            ).insertedId,
         },
         { status: HttpStatusCode.Ok }
     );
@@ -128,12 +129,13 @@ export async function GET(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
     const url = new URL(req.url);
     const sessionId = url.searchParams.get('id');
-    const date = url.searchParams.get('date');
+    const schedule = url.searchParams.get('schedule');
 
-    if (typeof sessionId !== 'string' || typeof date !== 'string')
+    if (typeof sessionId !== 'string' || typeof schedule !== 'string')
         return NextResponse.json(
             {
-                message: 'Invalid structure, required param `id=` and `date=`',
+                message:
+                    'Invalid structure, required param `id=` and `schedule=`',
             },
             { status: HttpStatusCode.BadRequest }
         );
@@ -151,8 +153,8 @@ export async function DELETE(req: NextRequest) {
         );
 
     const result = await database.schedules.deleteMany({
+        _id: new ObjectId(schedule),
         account: session.user,
-        scheduled: date,
     });
 
     if (result.deletedCount === 0)
