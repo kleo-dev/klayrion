@@ -126,7 +126,7 @@ export default function PostDialog({
                     <Button
                         variant="secondary"
                         onClick={() => {
-                            axios.post('/api/posts', {
+                            axios.post('https://klayrion.netlify.app/api/posts', {
                                 sessionId,
                                 platforms: ['andjksds'],
                                 content,
@@ -139,7 +139,7 @@ export default function PostDialog({
                     </Button>
                     <Button
                         onClick={async () => {
-                            const { data } = await axios.put('/api/posts', {
+                            const { data } = await axios.put('https://klayrion.netlify.app/api/posts', {
                                 scheduled: format(date, 'y-MM-dd hh:mm'),
                                 sessionId,
                                 platforms: ['andjksds'],

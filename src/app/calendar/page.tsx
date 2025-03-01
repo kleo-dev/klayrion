@@ -15,7 +15,7 @@ export default function CalendarApp() {
     const [events, setEvents] = useState<CalendarSchedule[]>([]);
 
     useEffect(() => {
-        axios.get(`/api/posts/?id=${sessionId}`).then((response) => {
+        axios.get(`https://klayrion.netlify.app/api/posts/?id=${sessionId}`).then((response) => {
             const v = response.data.schedules.map((e: any) => ({
                 date: parse(e.scheduled, 'yyyy-MM-dd HH:mm', new Date()),
                 platforms: e.platforms,
