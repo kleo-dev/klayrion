@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     if (!user)
         return NextResponse.json(
             {
-                message: 'Invalid email',
+                message: 'Email does not exist',
             },
             { status: 401 }
         );

@@ -50,7 +50,7 @@ export default function SignUp() {
                             console.log('Password:', password);
 
                             axios
-                                .post('https://klayrion.netlify.app/api/account/', {
+                                .post('/api/account/', {
                                     name,
                                     email,
                                     password,

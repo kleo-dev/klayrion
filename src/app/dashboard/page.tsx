@@ -11,7 +11,7 @@ import { redirect } from 'next/navigation';
 async function getSession(sessionId: string) {
     try {
         return (
-            await axios.get(`/api/session/?id=${sessionId}`)
+            await axios.get(`http://localhost:3000/api/session/?id=${sessionId}`)
         ).data.dashboard;
     } catch {
         redirect('/login');

@@ -18,8 +18,10 @@ export default function Login() {
 
     const handleLogin = async () => {
         try {
+            console.log('logging in');
+            console.log(email);
             const { sessionId } = (
-                await axios.post('https://klayrion.netlify.app/api/session/', {
+                await axios.post('/api/session/', {
                     email,
                     password,
                 })

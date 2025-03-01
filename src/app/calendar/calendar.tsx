@@ -140,7 +140,7 @@ export default function Calendar({
                                                             onClick={() => {
                                                                 axios
                                                                     .delete(
-                                                                        `https://klayrion.netlify.app/api/posts`,
+                                                                        `/api/posts`,
                                                                         {
                                                                             params: {
                                                                                 id: sessionId,
