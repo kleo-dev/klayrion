@@ -19,7 +19,7 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
 }) => {
     const times = ['00:00'].concat(
         Array.from({ length: 23 }, (_, h) =>
-            [0, 15, 30, 45].map(
+            [0].map(
                 (m) =>
                     `${(h + 1).toString().padStart(2, '0')}:${m
                         .toString()
