@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb';
-import config from './env';
+import config from './config';
 import { Schedule, Session, User } from '@/utils';
 
 const client = new MongoClient(config.mongoUrl);

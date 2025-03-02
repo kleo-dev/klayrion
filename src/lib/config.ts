@@ -1,3 +1,6 @@
+// import dotenv from 'dotenv';
+// dotenv.config();
+
 function error(name: string): string {
     throw `'${name}' not found in '.env'`;
 }
@@ -8,7 +11,9 @@ const config = {
         secret: process.env.TWITTER_SECRET || error('TWITTER_SECRET'),
     },
 
-    mongoUrl: process.env.MONGO_URL || error('MONGO_URL'),
+    mongoUrl: process.env.MONGO || error('MONGO'),
 };
+
+console.log(process.env.MONGO);
 
 export default config;

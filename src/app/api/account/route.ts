@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import database from '../database';
+import database from '../../../lib/database';
 
 // Account creation
 // Email doesn't exist
