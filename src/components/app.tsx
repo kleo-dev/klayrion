@@ -18,8 +18,7 @@ import {
 import { Calendar, LayoutDashboardIcon, Settings } from 'lucide-react';
 import Link from 'next/link';
 import useSmallScreen from '@/hooks/is-small';
-import ThemeToggle from './themeToggle';
-
+import SettingsDropdown from './settingsDropdown';
 // Menu items.
 const items = [
     {
@@ -34,13 +33,11 @@ const items = [
     },
 ];
 
-const footer = [
-    {
-        title: 'Settings',
-        url: '/settings',
-        icon: Settings,
-    },
-];
+const footer: {
+    title: string;
+    url: string;
+    icon: React.ElementType;
+}[] = [];
 
 export default function App({ children }: { children?: any }) {
     const isSmall = useSmallScreen();
@@ -77,10 +74,7 @@ export default function App({ children }: { children?: any }) {
                             </Link>
                         </div>
                     ))}
-                </div>
-
-                <div className="absolute right-0 mr-4">
-                    <ThemeToggle />
+                    <SettingsDropdown />
                 </div>
             </div>
 
@@ -132,7 +126,7 @@ export default function App({ children }: { children?: any }) {
                                         </Link>
                                     </SidebarMenuItem>
                                 ))}
-                                <ThemeToggle className="mx-auto" />
+                                <SettingsDropdown />
                             </SidebarMenu>
                         </SidebarFooter>
                     </Sidebar>
