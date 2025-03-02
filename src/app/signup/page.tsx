@@ -61,6 +61,16 @@ export default function SignUp() {
                     >
                         Create account
                     </Button>
+                    <div className="relative mt-6">
+                        <div className="relative flex justify-center text-xs">
+                            <span className="bg-background px-2 text-muted-foreground">
+                                Already have an account?{' '}
+                                <Link href="/login" className="underline">
+                                    Log in
+                                </Link>
+                            </span>
+                        </div>
+                    </div>
                 </div>
                 <div className="w-72 mx-auto">
                     <Label className="mt-3 text-sm text-muted-foreground break-words">

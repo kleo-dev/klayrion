@@ -64,19 +64,47 @@ export default function Login() {
                     <Button className="mt-5 w-80 mx-auto" onClick={handleLogin}>
                         Log in
                     </Button>
-                </div>
-                <div className="w-72 mx-auto">
-                    <Label className="mt-3 text-sm text-muted-foreground break-words">
-                        By clicking continue, you agree to our{' '}
-                        <Link href="/terms" className="underline">
-                            Terms of Service
-                        </Link>{' '}
-                        {'and '}
-                        <Link href="/privacy" className="underline">
-                            Privacy Policy
-                        </Link>
-                        .
-                    </Label>
+
+                    <div className="relative mt-5">
+                        <div className="absolute inset-0 flex items-center">
+                            <span className="w-full border-t"></span>
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                            <span className="bg-background px-2 text-muted-foreground">
+                                Alternatively
+                            </span>
+                        </div>
+                    </div>
+                    <div className="flex flex-col">
+                        <Button
+                            className="mt-5 w-80 mx-auto"
+                            variant="outline"
+                            onClick={() => router.push('/signup')}
+                        >
+                            <div className="flex items-center gap-2 flex-row">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 640 512"
+                                    fill="currentColor"
+                                >
+                                    <path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3zM504 312l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
+                                </svg>
+                                Create account
+                            </div>
+                        </Button>
+                        <Button className="mt-5 w-80 mx-auto" variant="outline">
+                            <div className="flex items-center gap-2 flex-row">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 488 512"
+                                    fill="currentColor"
+                                >
+                                    <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" />
+                                </svg>
+                                Continue with Google
+                            </div>
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>
