@@ -27,10 +27,12 @@ const chartConfig = {
 export default function Engagement({
     chartData,
 }: {
-    chartData: {
-        week: string;
-        views: number;
-    }[] | null;
+    chartData:
+        | {
+              week: string;
+              views: number;
+          }[]
+        | null;
 }) {
     return (
         <Card>
@@ -44,7 +46,7 @@ export default function Engagement({
                 {chartData ? (
                     <ChartContainer
                         config={chartConfig}
-                        className="w-full xl:w-[680px] lg:h-[270px] 2xl:w-[880px]"
+                        className="w-full xl:w-[680px] lg:h-[270px] 2xl:h-[350px] 2xl:w-[880px]"
                     >
                         <AreaChart
                             accessibilityLayer
