@@ -45,10 +45,6 @@ export default function SignUp() {
                     <Button
                         className="mt-5 w-80 mx-auto"
                         onClick={() => {
-                            console.log('Name:', name);
-                            console.log('Email:', email);
-                            console.log('Password:', password);
-
                             axios
                                 .post('/api/account/', {
                                     name,
