@@ -7,7 +7,6 @@ import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
 import Link from 'next/link';
 import { useState } from 'react';
-import cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
@@ -24,8 +23,6 @@ export default function Login() {
                     password,
                 })
             ).data;
-
-            cookies.set('session_id', sessionId);
 
             router.replace('/dashboard');
         } catch (err: any) {

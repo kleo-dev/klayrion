@@ -53,7 +53,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
     const { email, password } = await req.json();
 
-    if (typeof email !== 'string' || typeof password !== 'string')
+    if (typeof email !== 'string' || typeof password !== 'string') {
         return NextResponse.json(
             {
                 message:
@@ -61,36 +61,39 @@ export async function POST(req: NextRequest) {
             },
             { status: 400 }
         );
+    }
 
     const user = await database.users.findOne({ email });
 
-    if (!user)
+    if (!user || user.password !== password) {
         return NextResponse.json(
             {
-                message: 'Email does not exist',
+                message: 'Invalid email or password',
             },
             { status: 401 }
         );
+    }
 
-    if (user.password !== password)
-        return NextResponse.json(
-            {
-                message: 'Invalid password',
-            },
-            { status: 401 }
-        );
+    const sessionId = new ObjectId();
+    await database.sessions.insertOne({
+        _id: sessionId,
+        user: user._id.toString(),
+    });
 
-    const _id = new ObjectId();
-
-    database.sessions
-        .insertOne({ _id, user: user._id.toString() })
-        .then((res) => {});
-
-    return NextResponse.json(
+    const response = NextResponse.json(
         {
             message: 'ok',
-            sessionId: _id.toString(),
         },
         { status: 200 }
     );
+
+    response.cookies.set('session_id', sessionId.toString(), {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        path: '/',
+        maxAge: 60 * 60 * 24, // 1 day
+    });
+
+    return response;
 }

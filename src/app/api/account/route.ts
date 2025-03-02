@@ -30,14 +30,22 @@ export async function POST(req: NextRequest) {
 
     await database.users.insertOne({ email, password, name, platforms: {} });
 
-    const sessionId = (await database.sessions.insertOne({ user: email }))
-        .insertedId;
+    const sessionId = await database.sessions.insertOne({ user: email });
 
-    return NextResponse.json(
+    const response = NextResponse.json(
         {
             message: 'ok',
-            sessionId,
         },
         { status: 200 }
     );
+
+    response.cookies.set('session_id', sessionId.toString(), {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        path: '/',
+        maxAge: 60 * 60 * 24, // 1 day
+    });
+
+    return response;
 }

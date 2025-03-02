@@ -52,7 +52,6 @@ export default function SignUp() {
                                     password,
                                 })
                                 .then(async (response) => {
-                                    document.cookie = `session_id=${response.data.sessionId}`;
                                     router.push('/dashboard');
                                 })
                                 .catch((err) => {
