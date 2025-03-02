@@ -53,41 +53,45 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
     const { email, password } = await req.json();
 
-    if (typeof email !== 'string' || typeof password !== 'string')
-        return NextResponse.json(
-            {
-                message:
-                    "Invalid structure, body requires 'email: string' and 'password: string'",
-            },
-            { status: 400 }
-        );
+    // if (typeof email !== 'string' || typeof password !== 'string')
+    //     return NextResponse.json(
+    //         {
+    //             message:
+    //                 "Invalid structure, body requires 'email: string' and 'password: string'",
+    //         },
+    //         { status: 400 }
+    //     );
 
-    const user = await database.users.findOne({ email });
+    // const user = await database.users.findOne({ email });
 
-    if (!user)
-        return NextResponse.json(
-            {
-                message: 'Email does not exist',
-            },
-            { status: 401 }
-        );
+    // if (!user)
+    //     return NextResponse.json(
+    //         {
+    //             message: 'Email does not exist',
+    //         },
+    //         { status: 401 }
+    //     );
 
-    if (user.password !== password)
-        return NextResponse.json(
-            {
-                message: 'Invalid password',
-            },
-            { status: 401 }
-        );
+    // if (user.password !== password)
+    //     return NextResponse.json(
+    //         {
+    //             message: 'Invalid password',
+    //         },
+    //         { status: 401 }
+    //     );
 
-    const sessionId = (
-        await database.sessions.insertOne({ user: user._id.toString() })
-    ).insertedId;
+    // const _id = new ObjectId();
+
+    // database.sessions
+    //     .insertOne({ _id, user: user._id.toString() })
+    //     .then((res) => {});
+
+    const _id = new ObjectId();
 
     return NextResponse.json(
         {
             message: 'ok',
-            sessionId,
+            sessionId: _id.toString(),
         },
         { status: 200 }
     );
