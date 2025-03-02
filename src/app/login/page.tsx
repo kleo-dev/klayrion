@@ -18,10 +18,16 @@ export default function Login() {
     const handleLogin = async () => {
         try {
             const { sessionId } = (
-                await axios.post('/api/session/', {
-                    email,
-                    password,
-                })
+                await axios.post(
+                    '/api/session/',
+                    {
+                        email,
+                        password,
+                    },
+                    {
+                        withCredentials: true,
+                    }
+                )
             ).data;
 
             router.replace('/dashboard');

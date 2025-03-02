@@ -126,11 +126,16 @@ export default function PostDialog({
                     <Button
                         variant="secondary"
                         onClick={() => {
-                            axios.post('/api/posts', {
-                                sessionId,
-                                platforms: ['andjksds'],
-                                content,
-                            } satisfies PostRequest);
+                            axios.post(
+                                '/api/posts',
+                                {
+                                    platforms: ['andjksds'],
+                                    content,
+                                } satisfies PostRequest,
+                                {
+                                    withCredentials: true,
+                                }
+                            );
 
                             setNewPostDialogOpen(false);
                         }}
@@ -139,12 +144,17 @@ export default function PostDialog({
                     </Button>
                     <Button
                         onClick={async () => {
-                            const { data } = await axios.put('/api/posts', {
-                                scheduled: format(date, 'y-MM-dd hh:mm'),
-                                sessionId,
-                                platforms: ['andjksds'],
-                                content,
-                            } satisfies ScheduleRequest);
+                            const { data } = await axios.put(
+                                '/api/posts',
+                                {
+                                    scheduled: format(date, 'y-MM-dd hh:mm'),
+                                    platforms: ['andjksds'],
+                                    content,
+                                } satisfies ScheduleRequest,
+                                {
+                                    withCredentials: true,
+                                }
+                            );
 
                             addEvent({
                                 id: data.id,

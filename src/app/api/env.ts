@@ -8,7 +8,8 @@ const config = {
         secret: process.env.TWITTER_SECRET || error('TWITTER_SECRET'),
     },
 
-    mongoUrl: process.env.MONGO_URL || error('MONGO_URL'),
+    mongoUrl:
+        'mongodb+srv://admin:foAyEvJcTbR50Dlv@cluster0.gj9zm.mongodb.net/',
 };
 
 export default config;

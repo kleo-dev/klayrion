@@ -41,7 +41,6 @@ const TimeSelect: React.FC<TimeSelectProps> = ({
 
     const handleTimeChange = (newTime: string) => {
         const [hour, minute] = newTime.split(':').map(Number);
-        console.log(hour, minute);
         const newDate = new Date(date);
         newDate.setHours(hour === 24 ? 0 : hour, minute, 0, 0);
         setDate(newDate);

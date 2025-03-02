@@ -1,32 +1,34 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import AccountStatus from './accountStatus';
 import Engagement from './engagement';
 import Ideas from './ideas';
 import RecentPosts from './recentPosts';
 import App from '@/components/app';
 import { Calendar } from '@/components/ui/calendar';
-import { cookies } from 'next/headers';
 import axios from 'axios';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
-async function getSession(sessionId: string) {
-    try {
-        return (
-            await axios.get(`http://localhost:3000/api/session/?id=${sessionId}`)
-        ).data.dashboard;
-    } catch {
-        redirect('/login');
-    }
-}
+export default function Dashboard() {
+    const [data, setData] = useState({
+        engagement: null,
+        ideas: [],
+        accounts: [],
+        posts: [],
+    });
+    const router = useRouter();
 
-export default async function Dashboard() {
-    const cookieStore = await cookies();
-    const sessionId = cookieStore.get('session_id')?.value || '';
-
-    const data = await getSession(sessionId);
-
-    if (!data) {
-        return '';
-    }
+    useEffect(() => {
+        axios
+            .get('/api/session/')
+            .then((res) => {
+                setData(res.data.dashboard);
+            })
+            .catch(() => {
+                router.push('/login');
+            });
+    }, []);
 
     return (
         <App>

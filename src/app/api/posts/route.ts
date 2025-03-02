@@ -6,20 +6,20 @@ import { ObjectId } from 'mongodb';
 import { HttpStatusCode } from 'axios';
 
 export async function POST(req: NextRequest) {
-    const { sessionId, content, platforms }: PostRequest = await req.json();
+    const sessionId = req.cookies.get('session_id');
 
-    console.log(sessionId);
-
-    if (typeof sessionId !== 'string')
+    if (!sessionId)
         return NextResponse.json(
             {
-                message: 'Invalid structure',
+                message: 'Invalid session',
             },
-            { status: 400 }
+            { status: 404 }
         );
 
+    const { content, platforms }: PostRequest = await req.json();
+
     const session = await database.sessions.findOne({
-        _id: new ObjectId(sessionId),
+        _id: new ObjectId(sessionId.value),
     });
 
     if (!session)
@@ -45,14 +45,19 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-    const { sessionId, scheduled, content, platforms }: ScheduleRequest =
-        await req.json();
+    const sessionId = req.cookies.get('session_id');
 
-    if (
-        typeof sessionId !== 'string' ||
-        typeof scheduled !== 'string' ||
-        typeof content !== 'string'
-    )
+    if (!sessionId)
+        return NextResponse.json(
+            {
+                message: 'Invalid session',
+            },
+            { status: HttpStatusCode.NotFound }
+        );
+
+    const { scheduled, content, platforms }: ScheduleRequest = await req.json();
+
+    if (typeof scheduled !== 'string' || typeof content !== 'string')
         return NextResponse.json(
             {
                 message: 'Invalid structure',
@@ -61,7 +66,7 @@ export async function PUT(req: NextRequest) {
         );
 
     const session = await database.sessions.findOne({
-        _id: new ObjectId(sessionId),
+        _id: new ObjectId(sessionId.value),
     });
 
     if (!session)
@@ -89,18 +94,18 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-    const sessionId = new URL(req.url).searchParams.get('id');
+    const sessionId = req.cookies.get('session_id');
 
-    if (typeof sessionId !== 'string')
+    if (!sessionId)
         return NextResponse.json(
             {
-                message: 'Invalid structure, required param `id=`',
+                message: 'Invalid session',
             },
-            { status: HttpStatusCode.BadRequest }
+            { status: HttpStatusCode.NotFound }
         );
 
     const session = await database.sessions.findOne({
-        _id: new ObjectId(sessionId),
+        _id: new ObjectId(sessionId.value),
     });
 
     if (!session)
@@ -127,21 +132,27 @@ export async function GET(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-    const url = new URL(req.url);
-    const sessionId = url.searchParams.get('id');
-    const schedule = url.searchParams.get('schedule');
-
-    if (typeof sessionId !== 'string' || typeof schedule !== 'string')
+    const sessionId = req.cookies.get('session_id');
+    if (!sessionId)
         return NextResponse.json(
             {
-                message:
-                    'Invalid structure, required param `id=` and `schedule=`',
+                message: 'Invalid session',
+            },
+            { status: 404 }
+        );
+
+    const schedule = new URL(req.url).searchParams.get('schedule');
+
+    if (typeof schedule !== 'string')
+        return NextResponse.json(
+            {
+                message: 'Invalid structure',
             },
             { status: HttpStatusCode.BadRequest }
         );
 
     const session = await database.sessions.findOne({
-        _id: new ObjectId(sessionId),
+        _id: new ObjectId(sessionId.value),
     });
 
     if (!session)

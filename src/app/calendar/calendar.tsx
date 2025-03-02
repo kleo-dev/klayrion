@@ -43,14 +43,12 @@ const times: [string, number][] = [
 
 export default function Calendar({
     setDialog,
-    sessionId,
     events,
     setDate,
     date,
     setEvents,
 }: {
     setDialog: (b: boolean) => void;
-    sessionId: string;
     events: CalendarSchedule[];
     date: Date;
     setDate: (d: Date) => void;
@@ -86,10 +84,6 @@ export default function Calendar({
                                 <div className="grid grid-rows-10 h-full gap-2">
                                     {times.map((t, j) => {
                                         const event = events.find((e) => {
-                                            console.log(
-                                                e.date.getHours(),
-                                                t[1]
-                                            );
                                             return (
                                                 e.date.getFullYear() === w[1] &&
                                                 e.date.getMonth() === w[2] &&
@@ -143,7 +137,6 @@ export default function Calendar({
                                                                         `/api/posts`,
                                                                         {
                                                                             params: {
-                                                                                id: sessionId,
                                                                                 schedule:
                                                                                     event.id,
                                                                             } satisfies ScheduleRemoveRequest,

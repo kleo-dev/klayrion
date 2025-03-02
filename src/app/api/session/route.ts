@@ -2,22 +2,21 @@ import { NextResponse, NextRequest } from 'next/server';
 import database from '../database';
 import { ObjectId } from 'mongodb';
 
-// Account login
-// Email exists
-// Password is valid
 export async function GET(req: NextRequest) {
-    const sessionId = new URL(req.url).searchParams.get('id');
+    const sessionId = req.cookies.get('session_id');
 
-    if (typeof sessionId !== 'string')
+    console.log(sessionId);
+
+    if (!sessionId)
         return NextResponse.json(
             {
-                message: 'Invalid structure, required param `id=`',
+                message: 'Session not found',
             },
-            { status: 400 }
+            { status: 401 }
         );
 
     const user = await database.sessions.findOne({
-        _id: new ObjectId(sessionId),
+        _id: new ObjectId(sessionId.value),
     });
 
     if (!user)
@@ -25,7 +24,7 @@ export async function GET(req: NextRequest) {
             {
                 message: 'Invalid session',
             },
-            { status: 404 }
+            { status: 401 }
         );
 
     return NextResponse.json(
@@ -88,10 +87,10 @@ export async function POST(req: NextRequest) {
     );
 
     response.cookies.set('session_id', sessionId.toString(), {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        path: '/',
+        httpOnly: false,
+        secure: false,
+        sameSite: 'lax',
+        path: '/api',
         maxAge: 60 * 60 * 24, // 1 day
     });
 

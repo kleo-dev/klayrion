@@ -15,15 +15,19 @@ export default function CalendarApp() {
     const [events, setEvents] = useState<CalendarSchedule[]>([]);
 
     useEffect(() => {
-        axios.get(`/api/posts/?id=${sessionId}`).then((response) => {
-            const v = response.data.schedules.map((e: any) => ({
-                date: parse(e.scheduled, 'yyyy-MM-dd HH:mm', new Date()),
-                platforms: e.platforms,
-                id: e._id,
-            }));
-            setEvents(v);
-            setEventCount(response.data.schedules.length);
-        });
+        axios
+            .get(`/api/posts/?id=${sessionId}`, {
+                withCredentials: true,
+            })
+            .then((response) => {
+                const v = response.data.schedules.map((e: any) => ({
+                    date: parse(e.scheduled, 'yyyy-MM-dd HH:mm', new Date()),
+                    platforms: e.platforms,
+                    id: e._id,
+                }));
+                setEvents(v);
+                setEventCount(response.data.schedules.length);
+            });
     }, []);
 
     const [postDialog, setDialog] = useState(false);
@@ -47,7 +51,6 @@ export default function CalendarApp() {
 
                 <Calendar
                     setDialog={setDialog}
-                    sessionId={sessionId}
                     events={events}
                     date={date}
                     setDate={setDate}

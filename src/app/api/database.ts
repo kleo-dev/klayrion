@@ -1,8 +1,10 @@
 import { MongoClient } from 'mongodb';
 import config from './env';
-import { Schedule, ScheduleRequest, Session, User } from '@/utils';
+import { Schedule, Session, User } from '@/utils';
 
 const client = new MongoClient(config.mongoUrl);
+
+await client.connect();
 
 const db = client.db('klayrion');
 

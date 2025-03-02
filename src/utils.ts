@@ -3,7 +3,6 @@ Request types
 */
 
 export interface PostRequest {
-    sessionId: string;
     content: string;
     platforms: string[];
 }
@@ -14,7 +13,6 @@ export interface ScheduleRequest extends PostRequest {
 
 export interface ScheduleRemoveRequest {
     schedule: string;
-    id: string;
 }
 
 /*
