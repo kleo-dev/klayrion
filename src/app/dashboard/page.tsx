@@ -32,7 +32,7 @@ export default function Dashboard() {
 
     return (
         <App>
-            <div className="flex flex-1 flex-col p-6 px-5 md:px-10 h-max">
+            <div className="flex flex-1 flex-col p-6 px-5 md:px-10 h-full">
                 <div className="w-full">
                     <h1 className="text-3xl font-bold">Dashboard</h1>
                 </div>
