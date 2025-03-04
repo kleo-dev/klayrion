@@ -23,10 +23,17 @@ import TimeSelect from './timeSelect';
 import { CalendarEventExternal } from '@schedule-x/calendar';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { DATE_FORMAT, PostRequest, ScheduleRequest } from '@/lib/types';
+import {
+    DATE_FORMAT,
+    PlatformKind,
+    PostRequest,
+    ScheduleRequest,
+    UserPlatforms,
+} from '@/lib/types';
 import { CalendarSchedule, Event } from './calendar';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 type PostDialogProps = {
     newPostDialogOpen: boolean;
@@ -47,6 +54,21 @@ export default function PostDialog({
     addEvents: addEvent,
 }: PostDialogProps) {
     const [content, setContent] = useState('');
+    const [platforms, setPlatforms] = useState<UserPlatforms>({});
+
+    const [selectedPlatforms, setSelectedPlatforms] = useState<Set<string>>(
+        new Set()
+    );
+
+    useEffect(() => {
+        axios
+            .get('/api/platforms', {
+                withCredentials: true,
+            })
+            .then((res) => {
+                setPlatforms(res.data.platforms);
+            });
+    }, []);
 
     return (
         <Dialog open={newPostDialogOpen} onOpenChange={setNewPostDialogOpen}>
@@ -104,6 +126,38 @@ export default function PostDialog({
                 </div>
 
                 <div className="grid w-full gap-1.5">
+                    <Label htmlFor="message">Platforms</Label>
+                    <ToggleGroup
+                        type="multiple"
+                        className="flex flex-wrap gap-2"
+                    >
+                        {Object.entries(platforms).map(([name, platform]) => (
+                            <ToggleGroupItem
+                                key={platform.platform + platform.icon}
+                                value={platform.icon + platform.platform}
+                                className="w-14 h-12"
+                                onClick={() => {
+                                    setSelectedPlatforms((prev) => {
+                                        const newSet = new Set(prev);
+                                        if (newSet.has(name)) {
+                                            newSet.delete(name); // Toggle off
+                                        } else {
+                                            newSet.add(name); // Toggle on
+                                        }
+                                        return newSet;
+                                    });
+                                }}
+                            >
+                                <img
+                                    src={platform.icon}
+                                    className="w-10 h-10 rounded-full"
+                                />
+                            </ToggleGroupItem>
+                        ))}
+                    </ToggleGroup>
+                </div>
+
+                <div className="grid w-full gap-1.5">
                     <Label htmlFor="message">Content</Label>
                     <Textarea
                         className="resize-none"
@@ -125,7 +179,7 @@ export default function PostDialog({
                             axios.post(
                                 '/api/posts',
                                 {
-                                    platforms: ['andjksds'],
+                                    platforms: Array.from(selectedPlatforms),
                                     content,
                                 } satisfies PostRequest,
                                 {
@@ -144,7 +198,7 @@ export default function PostDialog({
                                 '/api/posts',
                                 {
                                     scheduled: format(date, DATE_FORMAT),
-                                    platforms: ['andjksds'],
+                                    platforms: Array.from(selectedPlatforms),
                                     content,
                                 } satisfies ScheduleRequest,
                                 {

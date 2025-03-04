@@ -27,7 +27,9 @@ export interface Platform {
     secret: string;
 }
 
-export type Platforms = { [key: string]: Platform };
+export interface Platforms {
+    [key: string]: Platform;
+}
 
 export interface User {
     name: string;
@@ -47,5 +49,9 @@ export interface Schedule extends Post {
 }
 
 export type Session = { user: string };
+
+export interface UserPlatforms {
+    [key: string]: Platform & { icon: string };
+}
 
 export const DATE_FORMAT = 'y-MM-dd hh:mm';
