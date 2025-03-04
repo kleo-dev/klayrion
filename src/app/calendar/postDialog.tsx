@@ -26,14 +26,14 @@ import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import axios from 'axios';
 import { DATE_FORMAT, PostRequest, ScheduleRequest } from '@/lib/types';
-import { CalendarSchedule } from './calendar';
+import { CalendarSchedule, Event } from './calendar';
 
 type PostDialogProps = {
     newPostDialogOpen: boolean;
     setNewPostDialogOpen: (b: boolean) => void;
     date: Date;
     setDate: (d: Date) => void;
-    setEvents: (e: CalendarSchedule) => void;
+    addEvents: (e: Event) => void;
 };
 
 export const today = new Date();
@@ -44,7 +44,7 @@ export default function PostDialog({
     setNewPostDialogOpen,
     date,
     setDate,
-    setEvents: addEvent,
+    addEvents: addEvent,
 }: PostDialogProps) {
     const [content, setContent] = useState('');
 
@@ -154,8 +154,8 @@ export default function PostDialog({
 
                             addEvent({
                                 id: data.id,
-                                date,
-                                platforms: [{ user: 'andjksds' }],
+                                time: date,
+                                title: 'New Post',
                             });
 
                             setNewPostDialogOpen(false);

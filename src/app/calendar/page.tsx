@@ -7,12 +7,12 @@ import { format, parse } from 'date-fns';
 import PostDialog, { today } from './postDialog';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import Calendar, { CalendarSchedule } from './calendar';
+import Calendar, { CalendarSchedule, Event } from './calendar';
 import { DATE_FORMAT } from '@/lib/types';
 
 export default function CalendarApp() {
     const sessionId = Cookies.get('session_id') || '';
-    const [events, setEvents] = useState<CalendarSchedule[]>([]);
+    const [events, setEvents] = useState<Event[]>([]);
 
     useEffect(() => {
         axios
@@ -20,10 +20,11 @@ export default function CalendarApp() {
                 withCredentials: true,
             })
             .then((response) => {
-                const v = response.data.schedules.map((e: any) => ({
-                    date: parse(e.scheduled, DATE_FORMAT, new Date()),
+                const v: Event[] = response.data.schedules.map((e: any) => ({
+                    time: parse(e.scheduled, DATE_FORMAT, new Date()),
                     platforms: e.platforms,
                     id: e._id,
+                    title: 'Post',
                 }));
                 setEvents(v);
             })
@@ -43,7 +44,7 @@ export default function CalendarApp() {
                     setDate={setDate}
                     newPostDialogOpen={postDialog}
                     setNewPostDialogOpen={setDialog}
-                    setEvents={(e) => {
+                    addEvents={(e) => {
                         setEvents([...events, e]);
                     }}
                 />
