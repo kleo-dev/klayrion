@@ -1,6 +1,6 @@
 'use client';
 
-import { PlatformKind } from '@/utils';
+import { PlatformKind } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PlatformIcon } from '@/components/icons';
 

@@ -14,6 +14,4 @@ const config = {
     mongoUrl: process.env.MONGO || error('MONGO'),
 };
 
-console.log(process.env.MONGO);
-
 export default config;

@@ -21,7 +21,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         axios
-            .get('/api/session/')
+            .get('/api/auth/')
             .then((res) => {
                 setData(res.data.dashboard);
             })

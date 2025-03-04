@@ -8,6 +8,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useTheme } from 'next-themes';
 import { Lightbulb, Settings } from 'lucide-react';
+import axios from 'axios';
+import { redirect } from 'next/navigation';
 
 export default function SettingsDropdown() {
     const { setTheme, theme } = useTheme();
@@ -25,7 +27,19 @@ export default function SettingsDropdown() {
                 <DropdownMenuItem>Profile</DropdownMenuItem>
                 <DropdownMenuItem>Billing</DropdownMenuItem>
                 <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem>Subscription</DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => {
+                        axios
+                            .delete('/api/auth/', {
+                                withCredentials: true,
+                            })
+                            .then(() => {
+                                redirect('/login');
+                            });
+                    }}
+                >
+                    Log Out
+                </DropdownMenuItem>
                 <DropdownMenuItem
                     onClick={() =>
                         setTheme(theme === 'light' ? 'dark' : 'light')

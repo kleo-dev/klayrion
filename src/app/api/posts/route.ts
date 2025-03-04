@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import database from '../../../lib/database';
-import { PostRequest, ScheduleRequest } from '@/utils';
+import { PostRequest, ScheduleRequest } from '@/lib/types';
 import post from './post';
 import { ObjectId } from 'mongodb';
 import { HttpStatusCode } from 'axios';
@@ -99,9 +99,9 @@ export async function GET(req: NextRequest) {
     if (!sessionId)
         return NextResponse.json(
             {
-                message: 'Invalid session',
+                message: 'No session',
             },
-            { status: HttpStatusCode.NotFound }
+            { status: HttpStatusCode.Unauthorized }
         );
 
     const session = await database.sessions.findOne({

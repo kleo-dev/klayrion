@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 import config from './config';
-import { Schedule, Session, User } from '@/utils';
+import { Schedule, Session, User } from '@/lib/types';
 
 const client = new MongoClient(config.mongoUrl);
 

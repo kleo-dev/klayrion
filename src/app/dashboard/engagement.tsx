@@ -101,7 +101,7 @@ export default function Engagement({
                         </AreaChart>
                     </ChartContainer>
                 ) : (
-                    <Skeleton className="w-full xl:w-[680px] lg:h-[270px] 2xl:w-[880px]" />
+                    <Skeleton className="w-full xl:w-[680px] lg:h-[270px] 2xl:h-[350px] 2xl:w-[880px]" />
                 )}
             </CardContent>
         </Card>

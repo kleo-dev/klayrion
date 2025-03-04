@@ -8,25 +8,27 @@ import PostDialog, { today } from './postDialog';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import Calendar, { CalendarSchedule } from './calendar';
+import { DATE_FORMAT } from '@/lib/types';
 
 export default function CalendarApp() {
-    const [eventCount, setEventCount] = useState(0);
     const sessionId = Cookies.get('session_id') || '';
     const [events, setEvents] = useState<CalendarSchedule[]>([]);
 
     useEffect(() => {
         axios
-            .get(`/api/posts/?id=${sessionId}`, {
+            .get(`/api/posts/`, {
                 withCredentials: true,
             })
             .then((response) => {
                 const v = response.data.schedules.map((e: any) => ({
-                    date: parse(e.scheduled, 'yyyy-MM-dd HH:mm', new Date()),
+                    date: parse(e.scheduled, DATE_FORMAT, new Date()),
                     platforms: e.platforms,
                     id: e._id,
                 }));
                 setEvents(v);
-                setEventCount(response.data.schedules.length);
+            })
+            .catch((err) => {
+                console.error(err);
             });
     }, []);
 
@@ -43,16 +45,12 @@ export default function CalendarApp() {
                     setNewPostDialogOpen={setDialog}
                     setEvents={(e) => {
                         setEvents([...events, e]);
-                        setEventCount(eventCount + 1);
                     }}
-                    eventId={eventCount}
-                    sessionId={sessionId}
                 />
 
                 <Calendar
                     setDialog={setDialog}
                     events={events}
-                    date={date}
                     setDate={setDate}
                     setEvents={setEvents}
                 />

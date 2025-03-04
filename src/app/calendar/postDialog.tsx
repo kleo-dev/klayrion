@@ -25,7 +25,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import axios from 'axios';
-import { PostRequest, ScheduleRequest } from '@/utils';
+import { DATE_FORMAT, PostRequest, ScheduleRequest } from '@/lib/types';
 import { CalendarSchedule } from './calendar';
 
 type PostDialogProps = {
@@ -33,9 +33,7 @@ type PostDialogProps = {
     setNewPostDialogOpen: (b: boolean) => void;
     date: Date;
     setDate: (d: Date) => void;
-    eventId: number;
     setEvents: (e: CalendarSchedule) => void;
-    sessionId: string;
 };
 
 export const today = new Date();
@@ -47,8 +45,6 @@ export default function PostDialog({
     date,
     setDate,
     setEvents: addEvent,
-    eventId,
-    sessionId,
 }: PostDialogProps) {
     const [content, setContent] = useState('');
 
@@ -147,7 +143,7 @@ export default function PostDialog({
                             const { data } = await axios.put(
                                 '/api/posts',
                                 {
-                                    scheduled: format(date, 'y-MM-dd hh:mm'),
+                                    scheduled: format(date, DATE_FORMAT),
                                     platforms: ['andjksds'],
                                     content,
                                 } satisfies ScheduleRequest,

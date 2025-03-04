@@ -19,7 +19,7 @@ export default function Login() {
         try {
             const { sessionId } = (
                 await axios.post(
-                    '/api/session/',
+                    '/api/auth/',
                     {
                         email,
                         password,

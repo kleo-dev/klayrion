@@ -1,4 +1,4 @@
-import { PlatformKind } from '@/utils';
+import { PlatformKind } from '@/lib/types';
 
 interface PlatformProps extends React.SVGProps<SVGSVGElement> {
     platform: PlatformKind;

@@ -1,7 +1,7 @@
 import { TwitterApi } from 'twitter-api-v2';
 import config from '@/lib/config';
 import { inspect } from 'util';
-import { Post } from '@/utils';
+import { Post } from '@/lib/types';
 import database from '../../../lib/database';
 import { format } from 'date-fns';
 import cron from 'node-cron';
